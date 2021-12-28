@@ -1,0 +1,37 @@
+<div class="card text-center" *ngIf="showbemvindo()">
+  <div class="card-header bg-primary text-white">
+    Processo de ativação
+  </div>
+  <div class="card-body">
+    <h5 class="card-title">Bem vindo a MySquare</h5>
+    <p class="card-text">Por favor preencha todas as informações para garantir que o seu cadastro seja aprovado.</p>
+    <!--p class="card-text">Seu cadastro sera avaliado e logo você podera fazer uso da ferramenta.</p-->
+  </div>
+</div>
+
+<app-solicitaracessopjvendor *ngIf="isPJVendor() && (!showaguardando())">
+</app-solicitaracessopjvendor>
+<app-solicitaracessopfclient *ngIf="isPFVendor() && (!showaguardando())">
+</app-solicitaracessopfclient>
+
+<app-solicitaracessopjclient *ngIf="isPJClient() && (!showaguardando())">
+</app-solicitaracessopjclient>
+
+<app-solicitaracessopfclient *ngIf="isPFClient() && (!showaguardando())">
+</app-solicitaracessopfclient>
+
+
+
+
+<div class="card text-center" *ngIf="showaguardando()">
+  <div class="card-header bg-primary text-white">
+    Processo de ativação
+  </div>
+  <div class="card-body">
+    <h5 class="card-title">Parabéns!</h5>
+    <p class="card-text">Neste momento seu cadastro passará por um processo de avaliação,</p>
+    <p class="card-text">dentro de 24 horas entraremos em contato com você através dos contatos que você informou durante o cadastro. </p>
+    <p class="card-text">Obrigado por se cadastrar e em breve nos vemos !</p>
+    <!--a *ngIf="btedita" class="btn btn-success text-white" (click)="btedita=false;formcadastro=true">Editar cadastro</a-->
+  </div>
+</div>

@@ -1,0 +1,189 @@
+<div class="spinner" *ngIf="!cotacao"></div>
+<div class="card" *ngIf="cotacao">
+  <div class="card-header">
+
+    <div class="row">
+      <h4 class="ml-4">
+        <b *ngIf="cotacao.orcamento == 's'">Cotação de Serviço:</b>
+        <b *ngIf="cotacao.orcamento == 'p'">Cotação de Produto:</b>
+        {{cotacao.titulo}}
+      </h4>
+
+      <div class="ml-auto mr-4">
+        <button *ngIf="cotacao.status == 'aberta'" type="button" class="btn btn-warning"
+          (click)="suspenderCotacao()">Suspender Cotação</button>
+        <button *ngIf="(cotacao.status == 'encerrada') || (cotacao.status == 'suspensa')" type="button"
+          class="btn btn-success" (click)="reabrirCotacao()">Reabrir Cotação</button>
+      </div>
+    </div>
+
+
+  </div>
+  <div class="card-body">
+    <div>
+      <div>
+        <h5 class="card-title"><b>Descrição:</b></h5>
+      </div>
+    </div>
+    <p class="card-text">{{cotacao.descricao}}</p>
+    <h5 class="card-title">
+      <b>Categorias:</b> <span *ngFor="let item of categorias"> {{item.nome}}, </span> <br>
+      <b>Data de Publicação:</b> {{cotacao.created_at | date:"dd/MM/yyyy"}}<br>
+      <b>Data de Encerramento:</b> {{cotacao.datafimentrega | date:"dd/MM/yyyy"}}
+    </h5>
+    <!--button type="button" class="btn btn-primary btn-sm">Entrar em Contato</button-->
+  </div>
+
+  <h4 *ngIf="listaProRecebida.length > 0" class="orcarecebidos">Oçamentos recebidos:</h4>
+  <table *ngIf="listaProRecebida.length > 0" class="table table-action">
+    <thead>
+      <tr>
+        <th class="t-small"></th>
+        <th class="t-small">Nª</th>
+        <th class="t-small">Fornecedor</th>
+        <th class="t-small">Valor Total</th>
+        <th *ngIf="cotacao.orcamento == 's'" class="t-small">Data estimada</th>
+        <th class="t-small">Detalhes da Proposta</th>
+      </tr>
+    </thead>
+    <tbody *ngFor="let item of listaProRecebida let i = index">
+      <tr>
+        <th scope="row">
+          <div class="form-check">
+            <input class="form-check-input" type="checkbox" id="gridCheck1">
+            <label class="form-check-label" for="gridCheck1">
+            </label>
+          </div>
+        </th>
+        <td><b class="esconder"> N.: </b>{{i+1}}</td>
+        <td><b class="esconder"> Fornecedor: </b>{{item.nomeempresa}}</td>
+        <td><b class="esconder"> Valor total: </b>{{item.valorservico}}</td>
+        <td *ngIf="cotacao.orcamento == 's'"><b class="esconder"> Data estimada: </b>{{item.dataentrega |
+          date:"dd/MM/yyyy"}}</td>
+        <td><button type="button" class="btn btn-primary" (click)="visualizarProposta(i)">Mais detalhes</button></td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<!--Modal de mais detalhes da cotação-->
+<div #formModal class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalDetalhe" aria-hidden="true"
+  *ngIf="cotacao">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header text-white badge-primary">
+        <h5 class="modal-title title_blue" id="myModalDetalhe">Detalhes da cotação</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <form class="p-3" [formGroup]="formCotacao">
+        <div class="form-row">
+          <div class="form-group col-md-5">
+            <label for="name">Fornecedor:</label>
+            <input type="text" class="form-control" id="name" disabled formControlName="fornecedor">
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group col-md-4">
+            <label for="telefone">Pais:</label>
+            <input type="email" class="form-control" id="telefone" disabled formControlName="pais">
+          </div>
+          <div class="form-group col-md-4">
+            <label for="telefone">Estado:</label>
+            <input type="email" class="form-control" id="estado" disabled formControlName="estado">
+          </div>
+          <div class="form-group col-md-4">
+            <label for="cidade">Cidade:</label>
+            <input type="email" class="form-control" id="cidade" disabled formControlName="cidade">
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="message-text" class="col-form-label">Descrição da Proposta:</label>
+          <!--textarea class="form-control" id="descricaoproposta" disabled formControlName="descricaoproposta"></textarea-->
+          <!--p class="form-control" id="descricaoproposta"  >{{descricaoproposta}}</p-->
+          <div class="caixa-descricao" [ngClass]="{'show-less': showShortDesciption}">
+            {{descricaoproposta}}
+          </div>
+          <button type="button" style="margin: 2px;" class="btn btn-info" (click)="alterDescriptionText()">
+            {{ showShortDesciption ? 'ler mais..': 'ler menos..' }}
+          </button>
+        </div>
+
+        <div *ngIf="cotacao.orcamento == 'p'">
+          <label class="title_blue mt-3">Lista de Produtos:</label>
+          <table class="table table-actionprod" id="accordion">
+            <!--class="table table-striped mt-0"-->
+            <thead class="text_blue">
+              <tr>
+                <th class="t-small"></th>
+                <th class="t-small">N.</th>
+                <th class="t-small">Descrição</th>
+                <th class="t-small">Qtd</th>
+                <th class="t-small">Val. Uni.</th>
+                <th class="t-small">Total</th>
+                <th class="t-small">Data estimada</th>
+              </tr>
+            </thead>
+            <tbody *ngFor="let item of propostasprod let j=index">
+              <tr>
+                <td>
+                  <button class="btn btn-primary" type="button" data-toggle="collapse"
+                    [attr.data-target]="'#collapseExample'+j" aria-expanded="false">
+                    <i class="fa fa-caret-down"></i></button>
+                </td>
+                <td scope="row"><b class="esconder"> N.: </b> {{j+1}}</td>
+                <td><b class="esconder"> Produto: </b>{{item.produto.descricao}}</td>
+                <td><b class="esconder"> Quantidade: </b>{{item.produto.qtd}}</td>
+                <td><b class="esconder"> Valor uni.: </b>{{item.valorunitario | currency: 'BRL' : 'symbol'}}</td>
+                <td><b class="esconder"> Valor total: </b>{{item.valortotal | currency: 'BRL' : 'symbol'}}</td>
+                <td><span><b class="esconder">Data estimada: </b> {{ item.dataentrega | date:"dd/MM/yyyy" }}</span></td>
+              </tr>
+
+              <tr class="collapse" [attr.id]="'collapseExample'+j" data-parent="#accordion">
+                <td colspan="100%">
+                  <div class="card">
+                    <div class="row no-gutters">
+                      <div class="col-sm-5">
+                        <img [src]="item.produto.base64" class="card-img-top h-100">
+                      </div>
+                      <div class="col-sm-7">
+                        <div class="card-body">
+                          <ul class="list-group list-group-flush">
+                            <li class="list-group-item"><strong> Fabricante:</strong>
+                              {{item.produto.fabricante}}
+                            </li>
+                            <li class="list-group-item"><strong> PartNumber:</strong>
+                              {{item.produto.partnumber}}
+                            </li>
+                            <li class="list-group-item"><strong> NCM:</strong>
+                              {{item.produto.ncm}}
+                            </li>
+                          </ul>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+
+        </div>
+        <div class="form-row">
+          <div class="form-group col-md-4" *ngIf="cotacao.orcamento == 's'">
+            <label>Data estimada:</label><br>
+            <input type="date" class="form-control" id="daatentrega" disabled formControlName="dataentrega">
+          </div>
+          <div class="form-group col-md-4">
+            <label>Proposta:</label><br>
+            <button style="margin: 2px;" (click)="getDocs()" class="btn btn-primary">Proposta.pdf</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<div class="spinner" *ngIf="showSpinner"></div>

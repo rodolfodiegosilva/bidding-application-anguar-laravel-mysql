@@ -1,0 +1,41 @@
+<div class="modal-content">
+  <div class="modal-header text-white bg-info">
+    <h5 class="modal-title" id="exampleModalLabel">{{title}}</h5>
+    <button type="button" class="close" (click)="onClose()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div [hidden] ="!showdata" class="modal-body">
+    {{msg}}
+  </div>
+
+  <div [hidden] ="showdata" class="modal-body">
+    <p [hidden] ="!visisiaServico">Escolha a data inicial e final que estará recebendo a visita:</p>
+    <p [hidden] ="!reativacaoCotacao">Escolha novamente as seguintes datas para a cotação:</p>
+  </div>
+
+  <div [hidden] ="showdata"  class="row container mb-2" >
+    <div class="col-md-6">
+      <label class="title_blue " [hidden] ="!reativacaoCotacao">Início da cotação:</label>
+      <label class="title_blue " [hidden] ="!visisiaServico">Data iníco:</label>
+      <input class="form-control" type="date" name="datainicio" (change)="salvaDataInicio($event.target.value)"  >
+    </div>
+
+    <div class="col-md-6">
+      <label class="title_blue " [hidden] ="!reativacaoCotacao">Fim da cotação:</label>
+      <label class="title_blue " [hidden] ="!visisiaServico">Data fim:</label>
+      <input class="form-control" type="date" name="datafim" (change)="salvaDataFim($event.target.value)" >
+    </div>
+    <div class="col-md-6" [hidden] ="!reativacaoCotacao" >
+      <label class="title_blue ">Data de entrega:</label>
+      <input class="form-control" type="date" name="datafim" (change)="salvaDataEntrega($event.target.value)" >
+    </div>
+  </div>
+
+  <div class="modal-footer">
+    <button [hidden] ="!showdata"  type="button" class="btn btn-primary" (click)="showData()">Sim</button>
+    <button [hidden] ="!showdata"  type="button" class="btn btn-secondary" (click)="onNao()">Não</button>
+    <button [hidden] ="showdata"  type="button" class="btn btn-primary" (click)="onSim()">Confirmar</button>
+    <button [hidden] ="showdata"  type="button" class="btn btn-secondary" (click)="hiddenData()">Voltar</button>
+  </div>
+</div>

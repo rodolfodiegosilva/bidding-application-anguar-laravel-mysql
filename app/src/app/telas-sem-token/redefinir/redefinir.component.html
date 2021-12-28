@@ -1,0 +1,18 @@
+<div class="login-page" *ngIf="codigoValido">
+    <div class="form">
+        <div class="text-primary mb-2">Redefinição de senha</div>
+        <input type="password" placeholder="senha" [(ngModel)]="senha" name="senha" />
+        <input type="password" placeholder="repetir senha" [(ngModel)]="rsenha" name="rsenha" />
+
+        <!--input type="password" formControlName="senha" placeholder="Password" />
+        <input type="password" formControlName="repetSenha" placeholder="Confirm Password" /-->
+
+
+        <button class="btn btn-primary" (click)="submeter()">Solicitar</button>
+        <div class="message">Fazer Login. <a class="text-primary" routerLink="/acessar">Acessar</a></div>
+        <div class="message my-0">Não registrado? <a class="text-primary" routerLink="/cadastrar">Criar conta</a></div>
+
+    </div>
+</div>
+
+<div class="spinner" *ngIf="showSpinner"></div>

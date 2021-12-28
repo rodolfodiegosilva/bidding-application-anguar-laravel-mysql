@@ -1,0 +1,157 @@
+<div class="container">
+  <form class="justify-content-center"
+   [formGroup]="formulario" id="myForm">
+    <div class="row justify-content-center wizard pt-2">
+
+      <a class="cincluido" (click)="ativaJanela(1)"><span class="badge">1</span> Dados pessoais</a>
+      <a [ngClass]="{cincluido: step>1,current: step<2}" (click)="ativaJanela(2)"><span class="badge">2</span>
+        Dados do perfil</a>
+      <a [ngClass]="{cincluido: step>2,current: step<3}" (click)="ativaJanela(3)"><span class="badge">3</span>
+        Termos de Uso</a>
+    </div>
+    <div class="row justify-content-center" *ngIf="step===2">
+      <div class="card px-0 mt-2 ">
+        <div class="card-body">
+          <h5 class="card-title text-center">Dados do perfil</h5>
+          <hr>
+
+          <div *ngIf="false" class="col-12">
+            <label>Foto perfil</label>
+            <div class="thumb">
+              <img [src]="url">
+              <input type="file" name="" value="">
+            </div>
+            <small class="text-center d-block">Tamanho máximo: 220px altura x 220px largura</small>
+          </div>
+
+          <div class="col-12">
+            <label>Foto do perfil</label>
+              <div class="personal-image ">
+              <label class="label">
+                <input type="file"  (change)="onTrocaImg($event)"/>
+                <figure class="personal-figure">
+                  <img [src]="url" class="personal-avatar" alt="avatar">
+                  <figcaption class="personal-figcaption">
+                    <img [src]="camerawhite">
+                  </figcaption>
+                </figure>
+              </label>
+              <small class="text-center d-block">Tamanho máximo: 220px altura x 220px largura</small>
+            </div>
+          </div>
+
+          <div class="form-row">
+              <label for="inputApelido" required>Apelido</label>
+              <input type="text" class="form-control" id="inputApelido" formControlName="apelido">
+          </div>
+          <div class="form-row">
+              <label for="inputEmail">Seu Email</label>
+              <input type="text" class="form-control" formControlName="email" readonly>
+          </div>
+        </div>
+        <div class="card-footer text-center">
+          <button type="button" (click)="anterior()" class="btn bg-success text-white mr-2">Anterior</button>
+          <button type="button" (click)="  proximo()" class="btn bg-success text-white">Próximo</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="row justify-content-md-center" *ngIf="step===1">
+      <div class="card px-0 mt-2">
+        <div class="card-body">
+          <h5 class="card-title text-center mb-3">Dados Pessoais</h5>
+          <hr>
+          <div class="form-row">
+            <div class="form-group col-sm-8">
+              <label for="inputNome">Nome</label>
+              <input type="text" class="form-control" readonly formControlName="name">
+            </div>
+            <div class="form-group col-sm-4">
+              <label for="inputCNPJ">CPF</label>
+              <input type="text" class="form-control" id="inputCPF" placeholder="CPF" formControlName="cpf"
+                mask="{{maskcpf}}">
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group col-sm-4">
+              <label for="inputEstado">País</label>
+              <input type="text" class="form-control" id="inputPais" placeholder="País" formControlName="pais">
+            </div>
+            <div class="form-group col-sm-4">
+              <label for="inputEstado">Estado</label>
+              <select  class="form-control" id="exampleFormControlSelect1"  (change)="onChange2($event.target.value)">
+                <option >Estados:</option>
+                <option *ngFor="let item of listaEstados" >{{item.nome}}</option>
+              </select>
+            </div>
+
+            <div class="form-group col-sm-4">
+              <label for="inputEstado">Cidade</label>
+              <select  class="form-control" id="exampleFormControlSelect1" (change)="onChange3($event.target.value)" >
+                <option >Cidades:</option>
+                <option *ngFor="let item of listaMunicipios" >{{item.nome}}</option>
+              </select>
+            </div>
+            <div class="form-group col-sm-3">
+              <label for="inputCEP">CEP</label>
+              <input type="text" class="form-control" id="inputCEP" placeholder="CEP" formControlName="cep"
+                mask="{{maskcep}}">
+            </div>
+            <div class="form-group col-sm-6">
+              <label for="inputEndereco">Endereço</label>
+              <input type="text" class="form-control" id="inputEndereco" placeholder="Endereço"
+                formControlName="endereco">
+            </div>
+            <div class="form-group col-sm-3">
+              <label for="telefone">Telefone</label>
+              <input type="text" class="form-control" id="telefone" placeholder="Telefone" formControlName="telefone"
+                mask="{{masktelefone}}">
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group col-6">
+              <label for="inputEndereco">Bairro</label>
+              <input type="text" class="form-control" id="inputComplemento" placeholder="Bairro"
+                formControlName="bairro">
+            </div>
+
+            <div class="form-group col-6">
+              <label for="inputEndereco">Complemento</label>
+              <input type="text" class="form-control" id="inputComplemento" placeholder="ex: bloco, ap"
+                formControlName="complemento">
+            </div>
+          </div>
+
+        </div>
+        <div class="card-footer text-center">
+          <button type="button" (click)="proximo()" class="btn bg-success text-white">Próximo</button>
+        </div>
+      </div>
+    </div>
+  </form>
+
+  <div class="row justify-content-md-center" *ngIf="step==3">
+    <div class="card mt-2" id="painel2">
+      <div class="card-body">
+        <h5 class="card-title text-center mb-3">Aceitar Termos</h5>
+        <p class="card-text">XXXXX XXXXX XXXXX XXXXX XXXXX XXXXX XXXXX XXXXX XXXXX XXXXX XXXXX XXXXX.
+          XXXXX XXXXX XXXXX XXXXX XXXXX XXXXX XXXXX XXXXX XXXXX XXXXX XXXXX XXXXX.
+        </p>
+        <p class="card-text">XXXXX XXXXX XXXXX XXXXX XXXXX XXXXX XXXXX XXXXX XXXXX XXXXX XXXXX XXXXX.
+          XXXXX XXXXX XXXXX XXXXX XXXXX XXXXX XXXXX XXXXX XXXXX XXXXX XXXXX XXXXX.
+        </p>
+        <div class="custom-control custom-checkbox">
+          <input type="checkbox" class="custom-control-input" id="termocheck" [(ngModel)]="termocheck">
+          <label class="custom-control-label" for="termocheck">Concordo com os termos de uso.</label>
+        </div>
+      </div>
+      <div class="card-footer text-center">
+        <button type="button" (click)="anterior()" class="btn bg-success text-white mr-2">Anterior</button>
+        <button type="button" (click)="onSubmit()" class="btn bg-success text-white">Concluir</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Spinner de load-->
+<div class="spinner" *ngIf="showSpinner"></div>

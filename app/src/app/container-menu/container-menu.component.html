@@ -1,0 +1,96 @@
+<div class="shadow bg-white rounded">
+
+  <nav class="navbar navbar-left navbar-expand-lg navbar-light">
+    <!--div style="width: 280px;float: left;">lll</div-->
+    <a class="navbar-brand col-2" href="#">MySquare</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown"
+      aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNavDropdown">
+      <ul class="navbar-nav" *ngIf="vendorEstaAtivo()">
+        <li class="nav-item">
+          <a class="nav-link" routerLink="/vendor/classificados">Vendas</a>
+        </li>
+        <!--li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            Dropdown link
+          </a>
+          <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+            <a class="dropdown-item" href="#">Action</a>
+            <a class="dropdown-item" href="#">Another action</a>
+            <a class="dropdown-item" href="#">Something else here</a>
+          </div>
+        </li-->
+      </ul>
+      <ul class="navbar-nav" *ngIf="clientEstaAtivo()">
+        <li class="nav-item">
+          <a class="nav-link" routerLink="/client/orcamentos">Cotações</a>
+        </li>
+        <!--li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            Dropdown link
+          </a>
+          <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+            <a class="dropdown-item" href="#">Action</a>
+            <a class="dropdown-item" href="#">Another action</a>
+            <a class="dropdown-item" href="#">Something else here</a>
+          </div>
+        </li-->
+      </ul>
+
+      <!-- manu profile-->
+      <ul class="nav navbar-nav navbar-right ml-auto" *ngIf="usuarioEstaAutenticado()">
+        <!--li class="nav-item"><a href="#" class="nav-link notifications">
+            <i class="fa fa-bell-o"></i><span class="badge badge-danger">1</span></a>
+        </li>
+        <li class="nav-item"><a href="#" class="nav-link messages">
+            <i class="fa fa-envelope-o"></i><span class="badge badge-danger">10</span></a>
+        </li-->
+        <li class="nav-item dropdown" *ngIf="adminEstaAtivo()">
+          <a data-toggle="dropdown" class="nav-link dropdown-toggle user-action">
+            <i class="fa fa-cog"></i> Painel
+          </a>
+          <ul class="dropdown-menu">
+            <li><a class="dropdown-item" [routerLink]="['/admin/liberacao']">
+                <i class="fa fa-key"></i> Liberar acessos</a></li>
+          </ul>
+        </li>
+        <li class="nav-item dropdown">
+          <a href="#" data-toggle="dropdown" class="nav-link dropdown-toggle user-action">
+            <img [src]='url' class="avatar" alt="Avatar"> {{getEmailUsuario()}} <b class="caret"></b>
+          </a>
+          <ul class="dropdown-menu">
+            <li *ngIf="isCheck()"><a class="dropdown-item" [routerLink]="[tipodeConta+'/conta']">
+                <i class="fa fa-user"></i> Minha Conta</a>
+            </li>
+            <li *ngIf="isCheck() && (tipopessoa == 'juridica') && (tipodeConta == 'client')"><a class="dropdown-item" [routerLink]="[tipodeConta+'/usuarios']">
+                <i class="fa fa-user"></i> Compradores</a>
+            </li>
+            <li *ngIf="isCheck() && (tipopessoa == 'juridica') && (tipodeConta == 'vendor')"><a class="dropdown-item" [routerLink]="[tipodeConta+'/usuarios']">
+              <i class="fa fa-user"></i> Vendedores</a>
+            </li>
+            <li *ngIf="isCheck()"><a class="dropdown-item" [routerLink]="[tipodeConta+'/alterarsenha']">
+                <i class="fa fa-lock"></i> Alterar Senha</a>
+            </li>
+            <li *ngIf="isCheck()" class="divider dropdown-divider"></li>
+            <li><a class="dropdown-item" (click)="logOut()"><i class="fa fa-sign-out"></i> Logout</a></li>
+          </ul>
+        </li>
+      </ul>
+
+
+      <ul class="navbar-nav ml-auto" *ngIf="!usuarioEstaAutenticado()">
+        <li class="nav-item">
+          <a class=" btn btn-success py-1 mx-2" routerLink="/acessar" data-toggle="collapse"
+            data-target="#navbarNavDropdown" aria-expanded="false"
+            aria-controls="multiCollapseExample1 multiCollapseExample2">
+            <i class="fa fa-key"></i> Login</a>
+        </li>
+        <!--li class="nav-item">
+          <a class="nav-link btn btn-outline-secondary py-1 mx-2" routerLink="/cadastrar">Cadastrar</a>
+      </li-->
+      </ul>
+    </div>
+  </nav>
+</div>

@@ -1,0 +1,16 @@
+<div class="login-page">
+  <div class="form">
+    <form [formGroup]="f" class="login-form">
+      <div class="text-success mb-2">Fazer Login</div>
+      <input type="emal" placeholder="email" formControlName="email" name="email"/>
+      <input type="password" placeholder="password" formControlName="password" name="password" />
+      <button class="btn btn-success" (click)="submeter()">
+       Entrar</button>
+      <div class="message"><a class="menu_links" (click)="recuperasenha()" >Recuperar senha</a></div>
+      <div class="message my-0"><a routerLink="/cadastrar">Criar conta</a></div>
+    </form>
+  </div>
+</div>
+
+<!-- Spinner de load-->
+<div class="spinner" *ngIf="showSpinner"></div>

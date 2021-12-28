@@ -1,0 +1,10 @@
+#mybox {
+    background: #664c8f;
+    height: auto;
+    padding: 100px 100px
+}
+.mybox-body {
+    color: white;
+    font-family: Arial;
+    text-align: center;
+}

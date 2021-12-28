@@ -1,0 +1,142 @@
+#painel {
+  width: calc(100% - 80px);
+  margin-left: 40px;
+}
+
+#painel .form-group > label {
+  position: absolute;
+  top: -10px;
+  left: 12px;
+  background-color: white;
+  padding-left: 5px;
+  padding-right: 5px;
+  font-size: 13px;
+}
+
+.form-row {
+  margin-top: 5px;
+}
+
+.ng-invalid:not(form) {
+  border: 1px solid red;
+}
+
+.form-control[readonly] {
+  background-color: white;
+  /* opacity: 1; */
+}
+
+/*//     //*/
+#perfil {
+  width: calc(100% - 80px);
+  margin-left: 40px;
+}
+
+#perfil .thumb {
+  width: 150px;
+  height: 150px;
+  display: block;
+  margin: 10px auto;
+  border-radius: 50%;
+  -webkit-border-radius: 50%;
+  -moz-border-radius: 50%;
+  overflow: hidden;
+  position: relative;
+  border: solid 2px #46474c;
+}
+#perfil .thumb:hover:before {
+  content: "MUDAR FOTO";
+  position: absolute;
+  z-index: 1;
+  top: 56%;
+  font-weight: bold;
+  margin-left: -58px;
+  left: 50%;
+  background: rgba(0, 159, 255, 0.75);
+  color: #fff;
+  padding: 5px 8px;
+  cursor: pointer;
+}
+#perfil .thumb img {
+  width: 100%;
+}
+
+#perfil .form-group > label {
+  position: absolute;
+  top: -10px;
+  left: 12px;
+  background-color: white;
+  padding-left: 5px;
+  padding-right: 5px;
+  font-size: 13px;
+}
+
+#perfil .inputadd {
+  width: fit-content;
+  display: block;
+  margin: 10px auto;
+  overflow: hidden;
+  position: relative;
+}
+
+.file-input {
+  height: .01em;
+  left: 0;
+  outline: 0;
+  position: absolute;
+  top: 0;
+  width: .01em;
+}
+
+
+
+
+.personal-image {
+  text-align: center;
+  margin-top: 15px;
+}
+.personal-image input[type="file"] {
+  display: none;
+}
+
+.personal-figure {
+  position: relative;
+  width: 180px;
+  height: 180px;
+}
+
+
+.personal-avatar {
+  cursor: pointer;
+  width: inherit;
+  height: inherit;
+  box-sizing: border-box;
+  border-radius: 100%;
+  border: 2px solid transparent;
+  box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.2);
+  transition: all ease-in-out .3s;
+}
+.personal-avatar:hover {
+  box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.5);
+}
+
+.personal-figcaption {
+  cursor: pointer;
+  position: absolute;
+  top: 0px;
+  width: inherit;
+  height: inherit;
+  border-radius: 100%;
+  opacity: 0;
+  background-color: rgba(0, 0, 0, 0);
+  transition: all ease-in-out .3s;
+}
+.personal-figcaption:hover {
+  opacity: 1;
+  background-color: rgba(0, 0, 0, .5);
+}
+.personal-figcaption > img {
+  margin-top: 32.5px;
+  width: 100px;
+  height: 100px;
+}

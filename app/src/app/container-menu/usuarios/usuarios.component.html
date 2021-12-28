@@ -1,0 +1,206 @@
+<div class="card border-light m-3">
+
+
+  <div class="card-header form-row">
+    <h4 *ngIf="tipoconta == 'vendor'"  class="col-md-12 text-center">Vendedores</h4>
+    <h4 *ngIf="tipoconta == 'client'" class="col-md-12 text-center">Compradores</h4>
+    <div class="form-row">
+    </div>
+  </div>
+
+  <div class="card-body text-center ">
+    <div class="card-body text-center ">
+      <table class="table table-striped">
+        <thead>
+          <tr>
+            <th scope="col" >Nome</th>
+            <th scope="col" class="esconder">E-MAIL</th>
+            <th scope="col" class="esconder">Telefone</th>
+            <!--th scope="col" class="esconder">Mais Detalhes</th-->
+            <th scope="col" >AÇÃO</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let item of listaUsers let i = index">
+            <td>{{item.nome}}<br>
+              <!--button class="esconderstatus btn btn-primary"  (click)="showUser(item.id)">
+                +Detalhes
+              </button-->
+            </td>
+            <td class="esconder">{{item.email}}</td>
+            <td class="esconder">{{item.telefone}}</td>
+            <!--td class="esconder" style="padding-top: 10px;">
+              <button class="btnliberacao btn btn-primary" (click)="showUser(item.id)">
+                Checar
+              </button>
+            </td-->
+            <td>
+              <button *ngIf="item.status == '5'"  (click)='desbloquearUser(item.id)' class="btn btn-success m-1" >
+                <i class="fa fa-unlock-alt"></i>
+              </button>
+              <button *ngIf="!(item.status == '5')" (click)='bloquearUser(item.id)' class="btn btn-danger m-1" >
+                <i class="fa fa-lock"></i>
+              </button>
+              <button (click)='excluirUser(item.id)' class="btn btn-danger m-1">
+                <i class="fa fa-trash"></i>
+              </button>
+              <button (click)='editarUser(i, item.id)' data-toggle="modal" data-target="#exampleModal" class="btn btn-primary m-1">
+                <i class="fa fa-edit"></i>
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <button *ngIf="tipoconta == 'client'" [disabled]="!(listaUsers.length < 2 )" style="margin-top: 20px;" type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
+      Cadastrar Comprador
+    </button>
+    <button *ngIf="tipoconta == 'vendor'" [disabled]="!(listaUsers.length < 2)" style="margin-top: 20px;" type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
+      Cadastrar Vendedor
+    </button>
+    <div *ngIf="(listaUsers.length  == 2) && tipoconta == 'client' "><span>Permetido até dois Compradores</span></div>
+    <div *ngIf="(listaUsers.length  == 2) && tipoconta == 'vendor'"><span>Permetido até dois Vendedores</span></div>
+  </div>
+
+
+<!-- Modal cadastro de novo Usuário-->
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header"
+      [ngClass]="{'badge-primary':!editaUser, 'badge-danger':editaUser}">
+        <h5 *ngIf="(tipoconta == 'client') && !editaUser"  class="modal-title" id="exampleModalLabel">Criar Comprador</h5>
+        <h5 *ngIf="(tipoconta == 'vendor') && !editaUser"  class="modal-title" id="exampleModalLabel">Criar Vendendor</h5>
+        <h5 *ngIf="(tipoconta == 'client') && editaUser"  class="modal-title" id="exampleModalLabel">Editar Comprador</h5>
+        <h5 *ngIf="(tipoconta == 'vendor') && editaUser"  class="modal-title" id="exampleModalLabel">Editar Vendendor</h5>
+        <button (click)='limparVariaveis()' type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <form [formGroup]="formUser" class="p-3">
+        <div class="form-row">
+          <div class="form-group col-md-12">
+            <label for="name">Nome</label>
+            <input class="form-control" type="text" id="name" formControlName="name">
+          </div>
+          <div class="form-group col-md-12">
+            <label for="email">E-mail</label>
+            <input class="form-control" type="email" id="email" formControlName="email" >
+          </div>
+          <div class="div-alert"><label class="text-danger" *ngIf="formUser.controls['email'].hasError('email')">Email inválido</label></div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group col-md-12">
+            <label for="telefone">Senha</label>
+            <input class="form-control" type="password" id="senha" formControlName="password">
+          </div>
+          <div class="form-group col-md-12">
+            <label for="tipoconta">Confirmar Senha</label>
+            <input class="form-control" type="password" id="repsenha" formControlName="confirmPassword">
+          </div>
+          <div class="form-group col-md-12">
+            <div class="div-alert"><label class="text-danger" *ngIf="formUser.controls['password'].hasError('hasNumber')">Deve conter um número! </label></div>
+            <div class="div-alert"><label class="text-danger" *ngIf="formUser.controls['password'].hasError('hasCapitalCase')">Deve conter letra maiúsula! </label></div>
+            <div class="div-alert"><label class="text-danger" *ngIf="formUser.controls['password'].hasError('hasSmallCase')">Deve conter letra minúscula! </label></div>
+            <div class="div-alert"><label class="text-danger" *ngIf="formUser.controls['password'].hasError('minlength')">Mínimo 5 caracteres! </label></div>
+            <div class="div-alert"><label class="text-danger" *ngIf="formUser.controls['password'].hasError('NoPassswordMatch')">Mínimo 5 caracteres! </label></div>
+            <div  class="div-alert"><label class="text-danger" *ngIf="formUser.controls['confirmPassword'].hasError('NoPassswordMatch')">Senha diferentes! </label></div>
+          </div>
+          <div class="form-group col-md-12">
+            <label for="tipoconta">Telefone</label>
+            <input class="form-control" id="telefone" mask="(00) 0 0000-0000||(00) 0000-0000" placeholder="(DDD) 00000-0000" formControlName="telefone" >
+          </div>
+        </div>
+      </form>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)='limparVariaveis()' >Cancelar</button>
+        <button type="button" class="btn btn-primary" (click)='salvaNovoUsuario()'>Salvar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal detalhes do Usuário
+<div #formModal class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalDetalhe" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header text-white badge-primary">
+        <h5 class="modal-title title_blue" id="myModalDetalhe">Detalhes do usuário</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <form [formGroup]="formUserChild" class="p-3">
+        <div class="form-row">
+          <div class="form-group col-md-6">
+            <label for="name">Razão Social</label>
+            <input type="text" class="form-control" id="name" formControlName="nomeempresa">
+          </div>
+          <div class="form-group col-md-6">
+            <label for="email">E-mail</label>
+            <input class="form-control" id="email" formControlName="email">
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group col-md-4">
+            <label>Ultima atualização</label><br>
+            <div class="div-ultimatualizacao"> {{ dataatualizacao| date:"dd/MM/yyyy HH:mm"}}</div>
+          </div>
+          <div class="form-group col-md-4">
+            <label for="tipoconta">Perfil</label>
+            <input class="form-control" id="tipoconta" formControlName="tipoconta">
+          </div>
+          <div class="form-group col-md-4">
+            <label for="tipoconta">Status</label>
+            <input class="form-control" id="status" formControlName="status">
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group col-md-8">
+            <label for="nomeempresa">Empresa</label>
+            <input class="form-control" id="nomeempresa" formControlName="nomeempresa">
+          </div>
+          <div class="form-group col-md-4">
+            <label for="cnpj">CNPJ</label>
+            <input type="text" class="form-control" id="cnpj" formControlName="cnpj">
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group col-md-8">
+            <label for="inputEndereco"> Endereço </label>
+            <input type="text" class="form-control" id="inputEndereco" formControlName="endereco">
+          </div>
+          <div class="form-group col-md-4">
+            <label for="telefone">Telefone</label>
+            <input type="email" class="form-control" id="telefone" formControlName="telefone">
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group col-md-3">
+            <label for="inputCity">Pais</label>
+            <input type="text" class="form-control" id="inputCountry" formControlName="pais">
+          </div>
+          <div class="form-group col-md-3">
+            <label for="inputState">Estado</label>
+            <input type="text" class="form-control" id="inputState" formControlName="estado">
+          </div>
+          <div class="form-group col-md-3">
+            <label for="inputCity">Cidade</label>
+            <input type="text" class="form-control" id="inputCity" formControlName="cidade">
+          </div>
+          <div class="form-group col-md-3">
+            <label for="inputZip">CEP</label>
+            <input type="text" class="form-control" id="inputZip" formControlName="cep">
+          </div>
+        </div>
+      </form>
+
+    </div>
+  </div>
+</div>-->
+<!-- Spinner de load-->
+<div class="spinner" *ngIf="showSpinner"></div>

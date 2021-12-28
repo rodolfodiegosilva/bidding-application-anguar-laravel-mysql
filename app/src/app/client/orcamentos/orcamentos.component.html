@@ -1,0 +1,470 @@
+<div class="row mt-2 mx-1">
+  <!-- Painel esquerdo-->
+  <div *ngIf="false"  class="col-sm-12 col-md-4 col-lg-3">
+    <fieldset class="card">
+      <div class="card-body">
+        <div class="card-title">
+          <h5 class="title_blue">Histórico de Cotações</h5>
+        </div>
+        <div class="form-group">
+          <label class="text-secondary" for="inputCategoria">Seguimento</label>
+          <select class="custom-select" id="inputCategoria">
+            <option selected>Choose...</option>
+            <option value="1">Tecnologia</option>
+            <option value="2">Refrigeração</option>
+            <option value="3">Contabilidade</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="text-secondary" for="inputSubCategoria">SubCategoria</label>
+          <select class="custom-select" id="inputSubCategoria">
+            <option selected>Choose...</option>
+            <option value="1">Tecnologia</option>
+            <option value="2">Refrigeração</option>
+            <option value="3">Contabilidade</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="text-secondary" for="dateiIni">Data Inicial</label>
+          <input class="form-control" type="date" name="datIni">
+        </div>
+
+        <div class="form-group">
+          <label class="text-secondary" for="dateiFim">Data Final</label>
+          <input class="form-control" type="date" name="dateiFim">
+        </div>
+        <div class="row">
+          <button type="button" class="btn btn-primary mx-3" data-toggle="modal"
+            (click)="importaPedidos()">Filtrar</button>
+        </div>
+      </div>
+    </fieldset>
+  </div>
+
+  <div class="col-sm-8"><!-- col-md-8 col-lg-9"-->
+
+
+
+
+    <div class="row" >
+      <button type="button" class="btn btn-primary mx-3 mb-2" data-toggle="modal" data-target="#exModalServico">
+        + Cotar Serviço</button>
+      <button type="button" class="btn btn-success mx-3 mb-2" data-toggle="modal" data-target="#exModalProduto">
+        + Cotar Produto</button>
+    </div>
+
+    <!-- Cards de cotações feitas ---------->
+    <div class="projetos">
+      <div class="card my-2" *ngFor="let item of listadePedidos let i=index">
+        <div class="card-header pb-2">
+          <strong class="title_blue">{{item.titulo}}
+            <span class="badge badge-success" *ngIf="item.status=='aberta'">Aberta</span>
+            <span class="badge badge-danger" *ngIf="item.status=='encerrada'">Encerrada</span>
+            <span class="badge badge-info" *ngIf="item.status=='concluida'">Concluida</span>
+          </strong>
+          <strong *ngIf="item.status=='aberta'" class="pull-right">
+            <button class="btn btn-danger badge text-white" (click)="modaldeencerramento(item)">Encerrar <i
+                class="fa fa-edit"></i></button>
+          </strong>
+          <strong *ngIf="item.status=='suspensa'" class="pull-right">
+            <span class="badge badge-warning" >Suspensa</span>
+          </strong>
+        </div>
+
+        <div class="card-body pt-2">
+          <div class="text-secondary">
+            <span class="project-field">
+              <strong class="text_blue">Tipo: </strong>
+              <span *ngIf="item.tipo=='s'">Serviço</span>
+              <span *ngIf="item.tipo=='p'">Produto</span>
+            </span>
+            <span class="project-field">
+              <strong class="text_blue">Publicado: </strong>
+              <span> {{ item.publicado| date:"dd/MM/yyyy" }}</span>
+            </span>
+            <span class="project-field">
+              <strong class="text_blue">Prazo estimado de entrega:</strong>
+              <span> {{ item.datafimentrega | date:"dd/MM/yyyy" }}</span>
+            </span>
+          </div>
+          <div class="text-secondary mt-3">
+
+            <strong><h5 class="card-title">Descrição: </h5></strong>
+            <p class="card-text">{{item.descricao}} </p>
+            <strong>Categorias: </strong>
+                <label class="pr-2" *ngFor="let categoria of item.categorias">{{categoria.nome}},</label>
+
+            <br>
+
+
+            <div class="mt-3">
+              <button type="button" class="btn btn-primary mr-1 mb-2" data-toggle="modal" (click)="orcamentoRecebido(item)"
+                data-target="#exampleModalOrcamentosRecebidos">Orçamentos Recebidos <span
+                  class="badge badge-light">{{item.qrdPropostas}}</span></button>
+              <button class="btn btn-primary mb-2" [routerLink]="['/client/detalhes',item.id]">Detalhes da
+                cotação</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal: Cotar Serviço ----------------------------------------------------------------------------------------------------------------->
+    <div class="modal fade bd-example-modal-xl" id="exModalServico" tabindex="-1" role="dialog"
+      aria-labelledby="servicoModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title title_blue" id="servicoModalLabel">Nova Cotação de Serviço</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="cancelaCotacao()">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+
+          <div class="modal-body py-0">
+            <div class="card-body" [formGroup]="formCotaServico">
+              <label class="title_blue">Título:</label>
+              <input type="text" class="form-control" formControlName="titulo" placeholder="Título da cotação.">
+
+              <label class="title_blue mt-3">Descrição:</label>
+              <textarea class="form-control text-secondary" rows="3" maxlength="500" formControlName="descricao"
+                placeholder="Descrição da cotação."></textarea>
+
+              <fieldset class="card">
+                <div class="card-body">
+                  <div class="card-title">
+                    <h5 class="title_blue">Selecione até 5 categorias</h5>
+                  </div>
+                  <div id="filtro_word" *ngIf="listaCatOrcamento.length < 5">
+                    <div class="text-secondary">Buscar</div>
+                    <div class="form-group box-filter">
+                      <input class="select2-search__field" (keyup)="getCategorias($event.target.value)"  (keydown.enter)="onKeydown($event)">
+                      <div class="chip" *ngFor="let item of listarequest; let i=index" id={{i}}>
+                        <span class="label" [ngStyle]="{'background-color':item.cor}" (click)="addtolist(item)">
+                          {{item.nome}}
+                        </span>
+                      </div>
+                      </div>
+                  </div>
+
+                    <div id="res_word">
+                      <div class="text-secondary">Lista escolhida</div>
+                      <div class="form-group box-filter">
+                        <div class="chip" *ngFor="let item of listaCatOrcamento; let i=index" id={{i}}>
+                          <span class="label" [ngStyle]="{'background-color':item.cor}">
+                            <span>{{item.nome}}</span>
+                            <i class="chip-icon fa fa-close text-center" (click)="removeFilter($event,item,i)"></i>
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                </div>
+              </fieldset>
+
+              <div class="row" >
+                <div class="form-group col-md-4">
+                  <label class="title_blue mt-2">Início da publicação:</label>
+                  <input class="form-control  mt-2" type="date" name="datainiciopublicacao" formControlName="datainiciopublicacao">
+                </div>
+
+                <div class="form-group col-md-4">
+                  <label class="title_blue mt-2">Fim da publicação:</label>
+                  <input class="form-control  mt-2" type="date" name="datafimpublicacao" formControlName="datafimpublicacao">
+                </div>
+
+                <div class="form-group col-md-4">
+                  <label class="title_blue mt-2">Data de entrega do serviço:</label>
+                  <input class="form-control  mt-2" type="date" name="datafimentrega" formControlName="datafimentrega">
+                </div>
+              </div>
+            </div>
+
+            <div class="modal-footer">
+
+              <button type="button" class="btn btn-success" (click)="salvarServico()">Savar</button>
+              <button type="button" class="btn btn-warning" data-dismiss="modal"
+                (click)="cancelaCotacao()">Cancelar</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal: Detalhes do serviço ----------------------------------------------------------------------------------------------------------------->
+    <div class="modal fade " id="exampleModalOrcamentosRecebidos" tabindex="-1" role="dialog"
+      aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Orçamentos Recebidos</h5>
+
+            <button type="button" class="close" (click)="limparLista()" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+
+          </div>
+          <div class="msg-sem-orca"  *ngIf="listaProRecebida.length == 0">
+            <span> Ainda não recebeu nenhum orçamento! :(</span>
+          </div>
+          <div class="modal-body" *ngIf="listaProRecebida.length > 0">
+            <table class="table table-action" >
+              <thead>
+                <tr>
+                  <th class="t-small">Nª</th>
+                  <th class="t-small">Fornecedor</th>
+                  <th class="t-small">Valor total R$</th>
+                  <th class="t-small">Arquivo proposta</th>
+                  <th class="t-small">Descrição</th>
+                </tr>
+              </thead>
+              <tbody *ngFor="let proposta of listaProRecebida let j=index">
+                <tr>
+                  <th scope="row"><b class="esconder"> N.: </b>{{j+1}}</th>
+                  <td><b class="esconder"> Fornecedor: </b>{{proposta.empresa}}</td>
+                  <td><b class="esconder"> Valor total: </b>{{ proposta.valorservico }}</td>
+                  <td>
+                    <button style="margin: 2px;" (click)="getDocs(proposta.docproposta.namestore, proposta.docproposta.name)"
+                      class="btn btn-primary">Proposta.pdf</button>
+                  </td>
+                  <td><b class="esconder"> Descrição: </b>
+                    <div class="caixa-descricao">
+                      {{proposta.proposta}}
+                    </div>
+                    <a [routerLink]="['/client/detalhes',proposta.idcotacao]" data-dismiss="modal" aria-label="Close">mais detalhes..</a>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+    <!-- Modal: add Cotar Produto ----------------------------------------------------------------------------------------------------------------->
+    <div class="modal fade bd-example-modal-xl" id="exModalProduto" tabindex="-1" role="dialog"
+      aria-labelledby="servicoModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title title_blue" id="servicoModalLabel">Nova Cotação de Produto</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="cancelaCotacao()">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+
+          <div class="modal-body py-0">
+            <div class="card-body" [formGroup]="formCotaProduto">
+              <div class="form-row">
+                <div class="form-group col-md-12">
+                  <label for="titulo" class="labelInBorder">Título:</label>
+                  <input type="text" class="form-control" id="titulo" formControlName="titulo"
+                    placeholder="Título da cotação.">
+                </div>
+              </div>
+              <div class="form-row">
+                <div class="form-group col-md-12">
+                  <label class="labelInBorder">Descrição:</label>
+                  <textarea class="form-control" rows="3" maxlength="500" formControlName="descricao"
+                    placeholder="Descrição da cotação."></textarea>
+                </div>
+              </div>
+
+              <fieldset class="card">
+                <div class="card-body">
+                  <div class="card-title">
+                    <h5 class="title_blue">Selecione até 5 categorias</h5>
+                  </div>
+                  <div id="filtro_word" *ngIf="listaCatOrcamento.length < 5">
+                      <div class="text-secondary">Buscar</div>
+                      <div class="form-group box-filter">
+                        <input class="select2-search__field" (keyup)="getCategorias($event.target.value)"  (keydown.enter)="onKeydown($event)">
+                        <div class="chip" *ngFor="let item of listarequest; let i=index" id={{i}}>
+                          <span class="label" [ngStyle]="{'background-color':item.cor}" (click)="addtolist(item)">
+                           {{item.nome}}
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div id="res_word">
+                      <div class="text-secondary">Lista escolhida</div>
+                      <div class="form-group box-filter">
+                        <div class="chip" *ngFor="let item of listaCatOrcamento; let i=index" id={{i}}>
+                          <span class="label" [ngStyle]="{'background-color':item.cor}">
+                            <span>{{item.nome}}</span>
+                            <i class="chip-icon fa fa-close text-center" (click)="removeFilter($event,item,i)"></i>
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                </div>
+              </fieldset>
+
+              <div class="row" >
+                <div class="form-group col-md-4">
+                  <label class="title_blue mt-2">Início da publicação:</label>
+                  <input class="form-control  mt-2" type="date" name="datainiciopublicacao" formControlName="datainiciopublicacao">
+                </div>
+
+                <div class="form-group col-md-4">
+                  <label class="title_blue mt-2">Fim da publicação:</label>
+                  <input class="form-control mt-2" type="date" name="datafimpublicacao" formControlName="datafimpublicacao">
+                </div>
+
+                <div class="form-group col-md-4">
+                  <label class="title_blue mt-2">Data de entrega do produto:</label>
+                  <input class="form-control mt-2" type="date" name="datafimentrega" formControlName="datafimentrega">
+                </div>
+              </div>
+
+              <div class="card-footer">
+                <div class="row">
+                  <div class="form-group ml-4">
+                    <button class="btn btn-primary" data-toggle="modal" data-target="#modalAddItem">
+                      + Adicionar</button>
+                  </div>
+                  <h5 class="text_blue ml-4">Lista de produtos</h5>
+                </div>
+                <table class="table table-action mt-2">
+                  <thead class="text_blue">
+                    <tr>
+                      <th class="t-small">N.</th>
+                      <th class="t-small">Descrição</th>
+                      <th class="t-small">Qtd.</th>
+                      <th class="t-small">NCM</th>
+                      <th class="t-small">PartNumber</th>
+                      <th class="t-small">Fabricante</th>
+                      <th class="t-small">Imagem</th>
+                      <th class="t-small">Ação</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let item of listaProdutos let i = index">
+                      <th scope="row"><b class="esconder"> N.: </b>{{i+1}}</th>
+                      <td><b class="esconder"> Descrição: </b>{{item.mdescricao}}</td>
+                      <td><b class="esconder"> Quantidade: </b>{{item.mqtd}}</td>
+                      <td><b class="esconder"> Ncm: </b>{{item.mncm}}</td>
+                      <td><b class="esconder"> Partnumber: </b>{{item.mpartnumber}}</td>
+                      <td><b class="esconder"> Fabricante: </b>{{item.mfabricante}}</td>
+                      <td><img [src]='item.mimagem' height="50px"></td>
+                      <td >
+                        <a class="btn btn-primary mr-1 mb-1" style="font-size: 20px; color: white;" (click)="editarProd(i)" data-toggle="modal" data-target="#modalAddItem" ><i class="fa fa-edit"></i></a>
+                        <a class="btn btn-danger " style="font-size: 20px; color: white;" (click)="excluirProd(i)" ><i   class="fa fa-trash"></i></a>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+
+              </div>
+            </div>
+
+            <div class="modal-footer">
+              <button type="button" class="btn btn-success"
+                (click)="salvarProduto()">Salvar</button>
+              <button type="button" class="btn btn-warning" data-dismiss="modal"
+                (click)="cancelaCotacao()">Cancelar</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal Add Prod -->
+    <div #modalAddItem id="modalAddItem" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 *ngIf="!editaProduto"  class="modal-title text_blue">Novo Produto</h5>
+            <h5 *ngIf="editaProduto" class="modal-title text_blue">Editar Produto</h5>
+            <button (click)="limparLista()" type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <form [formGroup]="formProdutos">
+              <div class="form-row">
+                <div class="form-group col-md-12">
+                  <label for="mdescricao" class="labelInBorder">Descrição:</label>
+                  <input type="text" class="form-control" id="mdescricao" formControlName="mdescricao"
+                    placeholder="Descrição do produto.">
+                </div>
+              </div>
+              <div class="form-row">
+                <div class="form-group col-md-10">
+                  <label for="mfabricante" class="labelInBorder">Fabricante:</label>
+                  <input type="text" class="form-control" formControlName="mfabricante"
+                    placeholder="Fabricante do produto.">
+                </div>
+                <div class="form-group col-md-2">
+                  <label for="mqtd" class="labelInBorder">Qtd:</label>
+                  <input type="text" class="form-control" id="mqtd" formControlName="mqtd" nui-number-mask>
+                </div>
+              </div>
+              <div class="form-row">
+                <div class="form-group col-md-6">
+                  <label for="mpartnumber" class="labelInBorder">PartNumber:</label>
+                  <input type="text" class="form-control" id="mpartnumber" formControlName="mpartnumber">
+                </div>
+
+                <div class="form-group col-md-6">
+                  <label for="mncm" class="labelInBorder">NCM:</label>
+                  <input type="text" class="form-control" id="mncm" formControlName="mncm">
+                </div>
+              </div>
+              <div class="card mt-2">
+                <div class="card-header text_blue mt-0">Imagem</div>
+                <div class="card-body">
+                  <img class="w-75" [src]="imgProd">
+                  <div class="custom-file">
+                    <input *ngIf="!imgProd" type="file" class="custom-file-input" id="customFile" (change)="onTrocaImg($event)">
+                    <label *ngIf="!imgProd" class="custom-file-label" for="customFile" id="customFileLabel">Selecione
+                      um arquivo</label>
+                  </div>
+                  <button *ngIf="imgProd"  type="button" class="btn btn-danger" (click)="delImg()" >Excluir imagem</button>
+                </div>
+              </div>
+            </form>
+
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-success" (click)="addProd($event)">Salvar</button>
+            <button type="button" class="btn btn-warning" data-dismiss="modal" (click)="limparLista()">Cancelar</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Fim Modal Add Prod -->
+
+  <!--------Modal de encerramento de Cotação-------------------------------------------->
+  <div #encerrarModal class="modal fade" id="encerrarModal" tabindex="-1" role="dialog"
+    aria-labelledby="encerrarModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header text-white badge-primary">
+          <h5 class="modal-title" id="encerrarModalLabel">Confirmar Encerramento</h5>
+          <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <form>
+            <div class="form-group">
+              <label for="msgbloqueio" class="col-form-label">Envie o motivo do encerramento para os fornecedores:</label>
+              <textarea class="form-control" name="msgbloqueio" [(ngModel)]="msgEncerramento"></textarea>
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-danger" (click)="encerrarCotacao()" data-dismiss="modal">
+            <i class="fa fa-exclamation-triangle" aria-hidden="true"></i>
+            Encerrar</button>
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+<!-- Spinner de load-->
+<div class="spinner" *ngIf="showSpinner"></div>

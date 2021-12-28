@@ -1,0 +1,76 @@
+/*
+ * Bootstrap 4 Component - Custom switch
+ * Version: 1.1.2
+ * Copyright (c) 2017-18 Martin Haubek
+ */
+.custom-switch {
+  line-height: 12px; }
+  .custom-switch .custom-switch-input {
+    position: absolute;
+    z-index: -1;
+    opacity: 0; }
+    .custom-switch .custom-switch-input, .custom-switch .custom-switch-input:after, .custom-switch .custom-switch-input:before,
+    .custom-switch .custom-switch-input *,
+    .custom-switch .custom-switch-input *:after,
+    .custom-switch .custom-switch-input *:before,
+    .custom-switch .custom-switch-input + .custom-switch-btn {
+      box-sizing: border-box; }
+      .custom-switch .custom-switch-input:selection, .custom-switch .custom-switch-input:after:selection, .custom-switch .custom-switch-input:before:selection,
+      .custom-switch .custom-switch-input *:selection,
+      .custom-switch .custom-switch-input *:after:selection,
+      .custom-switch .custom-switch-input *:before:selection,
+      .custom-switch .custom-switch-input + .custom-switch-btn:selection {
+        background: none; }
+    .custom-switch .custom-switch-input + .custom-switch-btn {
+      outline: 0;
+      display: inline-block;
+      position: relative;
+      -webkit-user-select: none;
+         -moz-user-select: none;
+          -ms-user-select: none;
+              user-select: none;
+      cursor: pointer;
+      width: 68px;
+      height: 38px;
+      margin: 0;
+      padding: 4px;
+      background: #adb5bd;
+      border-radius: 76px;
+      transition: all 150ms ease; }
+      .custom-switch .custom-switch-input + .custom-switch-btn:after, .custom-switch .custom-switch-input + .custom-switch-btn:before {
+        position: relative;
+        display: block;
+        content: "";
+        width: 29px;
+        height: 29px; }
+      .custom-switch .custom-switch-input + .custom-switch-btn:after {
+        left: 2px;
+        border-radius: 50%;
+        background: white;
+        transition: all 150ms ease; }
+      .custom-switch .custom-switch-input + .custom-switch-btn:before {
+        display: none; }
+      .custom-switch .custom-switch-input + .custom-switch-btn.text-hide {
+        top: -.80rem; }
+    .custom-switch .custom-switch-input:checked + .custom-switch-btn {
+      background: #28a745; }
+      .custom-switch .custom-switch-input:checked + .custom-switch-btn:after {
+        left: 30px; }
+    .custom-switch .custom-switch-input[disabled] + .custom-switch-btn {
+      background: rgba(173, 181, 189, 0.6);
+      cursor: default; }
+    .custom-switch .custom-switch-input[disabled]:checked + .custom-switch-btn {
+      background: rgba(40, 167, 69, 0.4); }
+    .custom-switch .custom-switch-input:not([disabled]):focus ~ .custom-switch-btn {
+      box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 0 0.25rem rgba(56, 123, 189, 0.25); }
+    .custom-switch .custom-switch-input[required] ~ .custom-switch-btn {
+      box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 0 0.125rem rgba(220, 53, 69, 0.5); }
+  .custom-switch.custom-switch-label-yesno .custom-switch-input + .custom-switch-btn {
+    background-image: url("data:image/svg+xml;charset=utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='68' height='38'%3E%3Ctext x='38.85714' y='23.75' font-size='12px' font-family='-apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Helvetica Neue, Arial, Noto Sans, sans-serif, Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol, Noto Color Emoji' fill='%23fff'%3ENão%3C/text%3E%3C/svg%3E"); }
+  .custom-switch.custom-switch-label-yesno .custom-switch-input:checked + .custom-switch-btn {
+    background-image: url("data:image/svg+xml;charset=utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='68' height='38'%3E%3Ctext x='9.71429' y='23.75' font-size='12px' font-family='-apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Helvetica Neue, Arial, Noto Sans, sans-serif, Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol, Noto Color Emoji' fill='%23fff'%3ESim%3C/text%3E%3C/svg%3E");
+  }
+
+.is-invalid .custom-switch .custom-switch-input ~ .custom-switch-btn,
+.was-validated .custom-switch:invalid .custom-switch-input ~ .custom-switch-btn {
+  box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 0 0.25rem #dc3545; }

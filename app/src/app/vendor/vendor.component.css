@@ -1,0 +1,119 @@
+/*@import '~bootstrap/dist/css/bootstrap.min.css';*/
+
+
+.chip {
+    display: inline-block
+}
+.chip .label {
+    position: relative;
+    background-color: #efefef;
+    color: #686868;
+    padding: 6.5px 25px 6.5px 13px;
+    height: 25px;
+    text-transform: none;
+    line-height: 12px;
+    margin-bottom: 0px;
+    margin-right: 5px;
+    display: inline-block;
+    cursor: pointer;
+    -webkit-border-radius: 12.5px;
+    -moz-border-radius: 12.5px;
+    border-radius: 12.5px
+}
+.chip .label .chip-icon {
+    position: absolute;
+    display: inline-block;
+    width: 17px;
+    height: 17px;
+    background-color: #d5d5d5;
+    line-height: 17px;
+    color: #686868;
+    font-size: 13px;
+    top: 4px;
+    right: 4px;
+    -webkit-border-radius: 8.5px;
+    -moz-border-radius: 8.5px;
+    border-radius: 8.5px
+}
+.chip .label .chip-icon:hover {
+    background-color: #fb535b;
+    color: #fff;
+    transition: background-color .3s ease-in-out;
+    -moz-transition: background-color .3s ease-in-out;
+    -webkit-transition: background-color .3s ease-in-out
+}
+.wk2-icon-close:before {
+    content: "\f153"
+}
+
+.select2-search__field{
+    font-size: 13px;
+    color: #686868;
+    width: 100%!important;
+    margin:3px 5px 3px;
+    font-size: 16px;
+    background: 0 0;
+    border: none;
+    outline: 0;
+    box-shadow: none;
+    -webkit-appearance: textfield;
+    box-sizing: border-box;
+    padding: 0;
+}
+.box-filter{
+        border: 1px solid #d5d5d5;
+        min-height: 50px;
+        border-radius: 3px;
+        font-size: 13px;
+        line-height: 1.4;
+        padding: 4px;
+    }
+
+/* classificados*/
+
+.project-item {
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    border-radius: 3px;
+    padding: 20px;
+    background-color: #fff;
+    margin-bottom: 20px;
+}
+
+.project-header{
+    font-size: 24px;
+    margin-bottom: 5px;
+   
+}
+.title_blue{
+     color: #253579;
+}
+.project-body{
+      font-family: 'Open Sans', sans-serif;
+}
+.project-field{
+ margin-right: 6px;
+}
+.project-field strong{
+    margin-right: 3px;
+}
+.project-details{
+    margin-top: 5px;
+}
+
+.project-buttom {
+    top: 20px;
+    right: 30px;
+    padding: 0;
+}
+
+.delete-row {
+    color: #FF0000;
+}
+
+.delete-row:hover {
+    color: #B22222;
+}
+.glyphicon {
+    font-size: 20px;
+}

@@ -1,0 +1,133 @@
+<!-- multistep form -->
+<form id="msform" [formGroup]="myFormulario" (ngSubmit)="onSubmit()">
+  <!-- progressbar -->
+  <ul id="progressbar">
+    <li class="active">Tipo de cadastro</li>
+    <li>Dados de Login</li>
+    <li *ngIf="swpj.checked">Dados da Empresa</li>
+    <li *ngIf="!swpj.checked">Dados Pessoais</li>
+  </ul>
+
+
+  <!-- fieldsets tipo cadastro -->
+  <fieldset class="ca_tipo">
+    <h2 class="fs-title">Informe o tipo do Cadastro</h2>
+    <hr>
+    <div class="row">
+      <div class="col-md-6">
+        <h3 class="fs-subtitle">Fornecedor</h3>
+        <div class="custom-switch custom-switch-label-yesno pl-0">
+          <input class="custom-switch-input" id="swforn" (click)="marcatipo($event)" type="checkbox" checked="checked"
+            #swforn>
+          <label class="custom-switch-btn" for="swforn"></label>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <h3 class="fs-subtitle">Consumidor</h3>
+        <div class="custom-switch custom-switch-label-yesno pl-0">
+          <input class="custom-switch-input" id="swcons" (click)="marcatipo($event)" type="checkbox" #swcons>
+          <label class="custom-switch-btn" for="swcons"></label>
+        </div>
+      </div>
+    </div>
+    <hr>
+    <div class="row">
+      <div class="col-md-6">
+        <h3 class="fs-subtitle">Pessoa Jurídica</h3>
+        <div class="custom-switch custom-switch-label-yesno pl-0">
+          <input class="custom-switch-input" id="swpj" (click)="marcapessoafisica($event)" type="checkbox"
+            checked="checked" #swpj>
+          <label class="custom-switch-btn" for="swpj"></label>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <h3 class="fs-subtitle">Pessoa Física</h3>
+        <div class="custom-switch custom-switch-label-yesno pl-0">
+          <input class="custom-switch-input" id="swpf" (click)="marcapessoafisica($event)" type="checkbox" #swpf>
+          <label class="custom-switch-btn" for="swpf"></label>
+        </div>
+      </div>
+    </div>
+    <hr>
+    <input type="button" name="btNext1" class="next action-button" value="Próximo" #btNext1
+      (click)="goTodados(btNext1)" />
+  </fieldset>
+
+  <!-- fieldsets email e senha -->
+  <fieldset id="ca_login">
+    <h2 class="fs-title">Crie seu cadastro</h2>
+    <h3 class="fs-subtitle">Esse é o primeiro passo</h3>
+
+    <input type="email" formControlName="email" placeholder="Email" />
+    <div class="div-alert"><label class="text-danger" *ngIf="myFormulario.controls['email'].hasError('email')">Email
+        inválido</label></div>
+
+    <input type="password" formControlName="password" placeholder="Senha" />
+    <input type="password" formControlName="confirmPassword" placeholder="Confiar senha" />
+
+    <div class="div-alert"><label class="text-danger"
+        *ngIf="myFormulario.controls['password'].hasError('hasNumber')">Deve conter um número!</label></div>
+    <div class="div-alert"><label class="text-danger"
+        *ngIf="myFormulario.controls['password'].hasError('hasCapitalCase')">Deve conter letra maiúsula!</label></div>
+    <div class="div-alert"><label class="text-danger"
+        *ngIf="myFormulario.controls['password'].hasError('hasSmallCase')">Deve conter letra minúscula!</label></div>
+    <div class="div-alert"><label class="text-danger"
+        *ngIf="myFormulario.controls['password'].hasError('minlength')">Mínimo 5 caracteres!</label></div>
+    <div class="div-alert"><label class="text-danger"
+        *ngIf="myFormulario.controls['password'].hasError('NoPassswordMatch')">Mínimo 5 caracteres!</label></div>
+    <div class="div-alert"><label class="text-danger"
+        *ngIf="myFormulario.controls['confirmPassword'].hasError('NoPassswordMatch')">Senha diferentes!</label></div>
+    <br>
+
+    <input type="button" name="previous" class="previous action-button" value="Anterior" #btPrev2
+      (click)="previousfunc($event,btPrev2)" />
+    <input type="button" name="btNext2" class="next action-button" value="Próximo" #btNext2 (click)="goEnd(btNext2)" />
+
+
+
+  </fieldset>
+
+  <fieldset id="ca_empresa">
+    <h2 class="fs-title" *ngIf="swpj.checked">Dados da empresa</h2>
+    <h2 class="fs-title" *ngIf="!swpj.checked">Dados pessoais</h2>
+    <h3 class="fs-subtitle" *ngIf="swpj.checked">Informe os dados da empresa</h3>
+    <h3 class="fs-subtitle" *ngIf="!swpj.checked">Informe seus dados pessoais</h3>
+
+    <input type="text" *ngIf="swpj.checked" formControlName="empresa" placeholder="Razão Social" />
+    <input type="text" *ngIf="!swpj.checked" formControlName="name" placeholder="Seu nome" />
+
+    <input type="text" *ngIf="swpj.checked" mask="00.000.000/0000-00" formControlName="cnpj"
+      placeholder="CNPJ da empresa" />
+    <input type="text" *ngIf="!swpj.checked" mask="000.000.000-00" formControlName="cpf" placeholder="Seu CPF" />
+
+    <input type="button" name="previous" class="previous action-button" value="Anterior" #btPrev3
+      (click)="previousfunc($event,btPrev3)" />
+    <input type="submit" name="submit" class="submit action-button" value="Finalizar" />
+  </fieldset>
+</form>
+
+<!-- Modal de sucesso-->
+<div #mensagemModal class="modal fade" id="mensagemModal" tabindex="-1" role="dialog"
+  aria-labelledby="mensagemModalLabel" data-keyboard="false" data-backdrop="static">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-white bg-primary">
+        <h5 class="modal-title" id="mensagemModalLabel">Cadastro realizado.</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="sair()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body text-secondary">
+        <p>Parabéns, seu cadastro foi criado com sucesso.</p>
+        <p>Verifique a caixa de entrada ou o spam do seu e-mail.</p>
+        <p>Em alguns instantes enviaremos um link para validação do seu cadastro.</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" data-dismiss="modal" (click)="sair()">OK</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Spinner de load-->
+<div class="spinner" *ngIf="showSpinner"></div>

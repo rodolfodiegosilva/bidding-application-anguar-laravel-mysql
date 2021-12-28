@@ -1,0 +1,344 @@
+<div class="card border-light m-3">
+
+
+  <div class="card-header form-row">
+    <h4 class="col-md-12 text-center">Liberação de Cadastros</h4>
+
+    <div class="form-row">
+      <div class="col-md-4 mb-2">
+        <div class="input-group">
+          <div class="input-group-prepend">
+            <span class="input-group-text">CNPJ</span>
+          </div>
+          <input type="text" class="form-control" [(ngModel)]="cnpj">
+          <div class="input-group-append">
+            <button class="btn btn-info" type="button" (click)="getbycnpj()"><i class="fa fa-search"></i></button>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-4 mb-2">
+        <div class="input-group">
+          <div class="input-group-prepend">
+            <span class="input-group-text">Email</span>
+          </div>
+          <input type="text" class="form-control" [(ngModel)]="email">
+          <div class="input-group-append">
+            <button class="btn btn-info" type="button" (click)="getbyemail()"><i class="fa fa-search"></i></button>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-4">
+        <div class="input-group">
+          <div class="input-group-prepend">
+            <span class="input-group-text">Status</span>
+          </div>
+          <select class="form-control" id="exampleFormControlSelect1" (change)="onChange($event.target.value)">
+            <option>Selecione</option>
+            <option>Todos</option>
+            <option>Aguardando</option>
+            <option>Aprovado</option>
+            <option>Reprovado</option>
+          </select>
+        </div>
+      </div>
+
+    </div>
+
+
+  </div>
+
+  <div class="card-body text-center ">
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th scope="col" >RAZÃO SOCIAL</th>
+          <th scope="col" class="esconder">CNPJ</th>
+          <th scope="col" class="esconder">E-MAIL</th>
+          <th scope="col" class="esconder">ESTADO</th>
+          <th scope="col" class="esconder">CIDADE</th>
+          <th scope="col" class="esconder">PERFIL</th>
+          <th scope="col" class="esconder">STATUS</th>
+          <th scope="col" class="esconder" >HISTORICO</th>
+          <th scope="col" >AÇÃO</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let item of listaCadastros">
+          <td>
+            {{item.nomeempresa}}<br>
+            <button class="esconderstatus"
+              [ngClass]="{'btn-secondary':item.status==0,'btn-primary':item.status==1,'btn-success':item.status==3,'btn-warning':item.status==2,'btn-danger':item.status==4,'btn-dark':item.status==5}"
+              (click)="modalMudaStauts(item.email)">{{statusName[item.status]}}
+            </button>
+
+            <button class="esconderstatus btn btn-primary"  (click)="abrirHistorico(item.id)">
+              Historico
+            </button>
+          </td>
+          <td class="esconder">{{item.cnpj}}</td>
+          <td class="esconder">{{item.email}}</td>
+          <td class="esconder">{{item.estado}}</td>
+          <td class="esconder">{{item.cidade}}</td>
+          <td class="esconder">{{item.tipoconta}}</td>
+          <td class="esconder" style="padding-top: 10px;">
+            <button class="btnliberacao" (click)="modalMudaStauts(item.email)"
+              [ngClass]="{'btn-secondary':item.status==0,'btn-primary':item.status==1,'btn-success':item.status==3,'btn-warning':item.status==2,'btn-danger':item.status==4,'btn-dark':item.status==5}">
+              {{statusName[item.status]}}
+            </button>
+          </td>
+          <td class="esconder" style="padding-top: 10px;">
+            <button class="btnliberacao btn btn-primary" (click)="abrirHistorico(item.id)">
+              Checar
+            </button>
+          </td>
+          <td>
+            <button class="btn btn-primary m-1" (click)="showuser(item.id)">
+              <i class="fa fa-eye"></i></button>
+            <button class="btn btn-success m-1" (click)="confirmaAtivarconta(item)" [disabled]="'3'==item.status">
+              <i class="fa fa-check-circle-o"></i>
+            </button>
+            <button class="btn btn-danger m-1" (click)="modaldebloqueio(item.email)" [disabled]="'5'==item.status">
+              <i class="fa fa-exclamation-triangle" aria-hidden="true"></i>
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <div>
+    <nav aria-label="Navegação de página exemplo">
+      <ul class="pagination justify-content-center">
+        <li class="page-item" *ngFor="let item of paginas" [ngClass]="{disabled: !item.url,active: item.active}">
+          <a class="page-link" (click)="getbylastquery(atualQuery,item.url)" >{{item.label}}</a>
+        </li>
+        <!--li class="page-item disabled"><a class="page-link" href="#" tabindex="-1">Anterior</a></li>
+        <li class="page-item"><a class="page-link" href="#">1</a></li>
+        <li class="page-item"><a class="page-link" href="#">2</a></li>
+        <li class="page-item"><a class="page-link" href="#">3</a></li>
+        <li class="page-item"><a class="page-link" href="#">Próximo</a></li-->
+      </ul>
+    </nav>
+  </div>
+
+  <!--------Modal detalhes do cadastro-------------------------------------------->
+  <div #formModal class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalDetalhe" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header text-white "
+          [ngClass]="{'badge-primary':tipoconta=='client','badge-danger':tipoconta=='vendor'}">
+          <h5 class="modal-title title_blue" id="myModalDetalhe">Detalhes do Cadastro</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <form [formGroup]="formUser" class="p-3">
+          <div class="form-row">
+            <div class="form-group col-md-6">
+              <label for="name">Razão Social</label>
+              <input type="text" class="form-control" id="name" formControlName="nomeempresa">
+            </div>
+            <div class="form-group col-md-6">
+              <label for="email">E-mail</label>
+              <input class="form-control" id="email" formControlName="email">
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group col-md-4">
+              <label>Ultima atualização</label><br>
+              <div class="div-ultimatualizacao"> {{ dataatualizacao| date:"dd/MM/yyyy HH:mm"}}</div>
+            </div>
+            <div class="form-group col-md-4">
+              <label for="tipoconta">Perfil</label>
+              <input class="form-control" id="tipoconta" formControlName="tipoconta">
+            </div>
+            <div class="form-group col-md-4">
+              <label for="tipoconta">Status</label>
+              <input class="form-control" id="status" formControlName="status">
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group col-md-8">
+              <label for="nomeempresa">Empresa</label>
+              <input class="form-control" id="nomeempresa" formControlName="nomeempresa">
+            </div>
+            <div class="form-group col-md-4">
+              <label for="cnpj">CNPJ</label>
+              <input type="text" class="form-control" id="cnpj" formControlName="cnpj">
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group col-md-8">
+              <label for="inputEndereco"> Endereço </label>
+              <input type="text" class="form-control" id="inputEndereco" formControlName="endereco">
+            </div>
+            <div class="form-group col-md-4">
+              <label for="telefone">Telefone</label>
+              <input type="email" class="form-control" id="telefone" formControlName="telefone">
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group col-md-3">
+              <label for="inputCity">Pais</label>
+              <input type="text" class="form-control" id="inputCountry" formControlName="pais">
+            </div>
+            <div class="form-group col-md-3">
+              <label for="inputState">Estado</label>
+              <input type="text" class="form-control" id="inputState" formControlName="estado">
+            </div>
+            <div class="form-group col-md-3">
+              <label for="inputCity">Cidade</label>
+              <input type="text" class="form-control" id="inputCity" formControlName="cidade">
+            </div>
+            <div class="form-group col-md-3">
+              <label for="inputZip">CEP</label>
+              <input type="text" class="form-control" id="inputZip" formControlName="cep">
+            </div>
+          </div>
+        </form>
+        <div class="pb-3 pl-3">
+          <div *ngIf="tipoconta=='vendor'">
+            <label for="inputCategoria">Categorias:</label>
+            <div class="row ">
+              <div *ngFor="let item of listaCategoriasUser; let i = index" class="col-md-3 mb-2">
+                <input type="text" class="form-control" [(ngModel)]="listaCategoriasUser[i].nome">
+              </div>
+            </div>
+          </div>
+          <div *ngIf="tipoconta=='client'">
+            <div class="form-group col-md-3 pl-0">
+              <label for="inputZip">Segmento:</label>
+              <input type="text" class="form-control" [(ngModel)]="segmentoUser">
+            </div>
+          </div>
+          <div class="pt-2">
+            <label>Documentos:</label><br>
+            <button style="margin: 2px;" *ngFor="let item of listaDocsUser" (click)="getDocs(item.namestore, item.name)"
+              class="btn btn-primary">{{item.name}}</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!--------Modal Histórico do  usuário-------------------------------------------->
+  <div #historicoModal class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myHistoricoModal" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header text-white "
+          [ngClass]="{'badge-primary':tipoconta=='client','badge-danger':tipoconta=='vendor'}">
+          <h5 class="modal-title title_blue" id="myHistoricoModal">Histórico</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <form class="p-3">
+          <div class="form-row">
+            <div class="form-group col-md-12">
+              <label for="historico">Histórico da conta: {{email}}</label>
+              <div class="caixa-historico">
+                <span *ngFor="let item of historicoUser">
+                  <label class="ml-1 mt-1"> <b>Data:</b> {{ item.created_at| date:"dd/MM/yyyy HH:mm"}}</label>
+                  <p class="historico" >{{item.descricao}}</p>
+                  <hr style="width: 90%;">
+                </span>
+              </div>
+            </div>
+          </div>
+        </form>
+
+      </div>
+    </div>
+  </div>
+
+  <!--------Modal da mudança de status-------------------------------------------->
+  <div #mudaStatusModal class="modal fade" id="mudaStatusModal" tabindex="-1" role="dialog"
+    aria-labelledby="mudaStatusModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header text-white badge-primary">
+          <h5 class="modal-title" id="mudaStatusModalLabel">Mudar Status</h5>
+          <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <label for="message-text" class="col-form-label">Mudar o status de: {{email}}</label>
+          <select class="form-control" id="exampleFormControlSelect1" [(ngModel)]="novoStatus">
+            <option>Status</option>
+            <option>Criado</option>
+            <option>Checado</option>
+            <option>Aguardando</option>
+            <option>Aprovado</option>
+            <option>Reprovado</option>
+            <option>Bloqueado</option>
+          </select>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+          <button type="button" class="btn btn-primary" (click)="mudaStatus()">Salvar alteração</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!--------Modal da Justificativa do bloqueio-------------------------------------------->
+  <div #bloquearModal class="modal fade" id="bloquearModal" tabindex="-1" role="dialog"
+    aria-labelledby="bloquearModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header text-white badge-primary">
+          <h5 class="modal-title" id="bloquearModalLabel">Confirmar bloqueio</h5>
+          <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <form>
+            <div class="form-group">
+              <label for="msgbloqueio" class="col-form-label">Informe uma mensagem que irá para: {{email}}</label>
+              <textarea class="form-control" name="msgbloqueio" [(ngModel)]="msgbloqueio"></textarea>
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-warning" (click)="notificar()" data-dismiss="modal">
+            <i class="fa fa-exclamation-triangle" aria-hidden="true"></i>
+            Notificar</button>
+          <button type="button" class="btn btn-danger" (click)="bloquearUser()" data-dismiss="modal">
+            <i class="fa fa-exclamation-triangle" aria-hidden="true"></i>
+            Bloquear</button>
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!--------Modal Ativar conta-------------------------------------------
+  <div #ativarModal class="modal fade" id="ativarModal" tabindex="-1" role="dialog" aria-labelledby="ativarModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header text-white badge-primary">
+          <h5 class="modal-title" id="ativarModalLabel">Confirmar ativação</h5>
+          <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <p>Você confirma a ativação do usuário: {{stringemail}}</p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-success">
+            <i class="fa fa-check-circle-o"></i>
+            Ativar</button>
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+        </div>
+      </div>
+    </div>
+  </div-->
+
+  <!-- Spinner de load-->
+  <div class="spinner" *ngIf="showSpinner"></div>

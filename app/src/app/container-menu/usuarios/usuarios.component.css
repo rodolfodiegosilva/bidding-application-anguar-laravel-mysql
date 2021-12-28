@@ -1,0 +1,52 @@
+.label-alert {
+	font-size: 10px;
+	margin-bottom: 0px;
+}
+
+.div-alert{
+  font-size: 12px;
+	margin-bottom: 0px;
+  text-align: initial;
+}
+
+
+.campo {
+  display: flex;
+  align-items: center;
+  padding: .375rem .75rem;
+  margin-bottom: 0;
+  font-size: 0.8rem;
+  font-weight: 400;
+  line-height: 1.5;
+  color: #495057;
+  text-align: center;
+  white-space: nowrap;
+  border: 1px solid #ced4da;
+  border-radius: .25rem;
+}
+
+.esconderstatus{
+  display: none;
+}
+.btnliberacao{
+  border-radius: 10px;
+  border: none;
+  height: 25px;
+  padding-top: 0px;
+}
+@media (max-width: 880px) {
+  .esconder{
+    display: none;
+  }
+  .esconderstatus{
+    display: inline;
+    border-radius: 10px;
+    border: none;
+    margin-top: 5px;
+    margin-bottom: 5px;
+    height: 25px;
+    padding-top: 0px;
+  }
+
+}
+

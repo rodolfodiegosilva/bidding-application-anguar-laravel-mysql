@@ -1,0 +1,50 @@
+th{
+    padding: 0px;
+    max-width: 200px;
+}
+td{
+    padding: 0px;
+}
+
+.modal-content{
+    padding: 5px;
+}
+.div-ultimatualizacao{
+  border: 1px solid #ced4da;
+  color: #495057;
+  padding: .375rem .75rem;
+  border-radius: .25rem;
+  height: 38px;
+}
+.esconderstatus{
+  display: none;
+}
+.btnliberacao{
+  border-radius: 10px;
+  border: none;
+  height: 25px;
+  padding-top: 0px;
+}
+.caixa-historico{
+  background-color: #dee1e6;
+  border: 1px solid #495057;
+  border-radius: 10px;
+}
+.historico{
+  margin: 0 5px 0 5px;
+}
+@media (max-width: 880px) {
+  .esconder{
+    display: none;
+  }
+  .esconderstatus{
+    display: inline;
+    border-radius: 10px;
+    border: none;
+    margin-top: 5px;
+    margin-bottom: 5px;
+    height: 25px;
+    padding-top: 0px;
+  }
+
+}

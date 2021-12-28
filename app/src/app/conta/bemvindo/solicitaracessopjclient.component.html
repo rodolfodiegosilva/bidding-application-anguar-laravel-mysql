@@ -1,0 +1,211 @@
+<div class="container">
+  <div class="row justify-content-md-center wizard pt-2">
+
+    <a class="cincluido" (click)="ativaJanela(1)"><span class="badge">1</span> Dados do perfil</a>
+    <a [ngClass]="{cincluido: step>1,current: step<2}" (click)="ativaJanela(2)"><span class="badge">2</span>
+      Dados da Empresa</a>
+    <a [ngClass]="{cincluido: step>2,current: step<3}" (click)="ativaJanela(3)"><span class="badge">3</span>
+      Termos de Uso</a>
+  </div>
+  <div class="row justify-content-md-center" *ngIf="step===1">
+    <div class="card col-sm-8 px-0 mt-2">
+      <div class="card-body">
+        <h5 class="card-title text-center">Dados do perfil</h5>
+        <hr>
+        <form class="justify-content-center m-3" [formGroup]="formulario" id="myForm">
+          <div class="form-row">
+            <div class="form-group col-sm-6">
+              <label for="inputApelido" required>Razão Social</label>
+              <input type="text" class="form-control" formControlName="nome" readonly>
+            </div>
+            <div class="form-group col-sm-6">
+              <label for="inputEmail">Seu Email</label>
+              <input type="text" class="form-control" formControlName="email" readonly>
+            </div>
+          </div>
+
+          <fieldset *ngIf="tipoconta == 'client'"  class="card">
+            <div class="card-body">
+              <div class="card-title">
+                <h5 class="title_blue">Selecione um segmento:</h5>
+              </div>
+
+              <div class="form-group">
+                <select  class="form-control" id="exampleFormControlSelect1" formControlName="segmento">
+                  <option >Segmentos</option>
+                  <option *ngFor="let item of listaSegmentos" >{{item.nome}}</option>
+                </select>
+              </div>
+
+
+
+            </div>
+          </fieldset>
+
+        </form>
+      </div>
+      <div class="card-footer text-center">
+        <button type="button" (click)="proximo($event)" class="btn bg-success text-white">Próximo</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="row justify-content-md-center" *ngIf="step===2">
+    <div class="card col-sm-8 px-0 mt-2">
+      <div class="card-body">
+        <h5 class="card-title text-center mb-3">Dados da Empresa</h5>
+        <hr>
+        <form class="justify-content-center m-3" [formGroup]="formulario" id="myForm">
+          <div class="form-row">
+            <div class="form-group col-sm-8">
+              <label for="inputNome">Razão Social</label>
+              <input type="text" class="form-control" formControlName="nome" readonly>
+            </div>
+            <div class="form-group col-sm-4">
+              <label for="inputCNPJ">CNPJ</label>
+              <input type="text" class="form-control" id="inputCNPJ" placeholder="CNPJ" formControlName="cnpj"
+                mask="{{maskcnpj}}">
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group col-sm-4">
+              <label for="inputEstado">País</label>
+              <input type="text" class="form-control" id="inputPais" placeholder="País" formControlName="pais">
+            </div>
+            <!--div class="form-group col-sm-4">
+              <label for="inputEstado">Estado</label>
+              <input type="text" class="form-control" id="inputEstado" placeholder="Estado" formControlName="estado">
+            </div-->
+            <div class="form-group col-sm-4">
+              <label for="inputEstado">Estado</label>
+              <select  class="form-control" id="exampleFormControlSelect1"  (change)="onChange2($event.target.value)">
+                <option >Estados:</option>
+                <option *ngFor="let item of listaEstados" >{{item.nome}}</option>
+              </select>
+            </div>
+
+            <div class="form-group col-sm-4">
+              <label for="inputEstado">Cidade</label>
+              <select  class="form-control" id="exampleFormControlSelect1" (change)="onChange3($event.target.value)" >
+                <option >Cidades:</option>
+                <option *ngFor="let item of listaMunicipios" >{{item.nome}}</option>
+              </select>
+            </div>
+
+            <!--div class="form-group col-sm-4">
+              <label for="inputCidade">Cidade</label>
+              <input type="text" class="form-control" id="inputCidade" placeholder="Cidade" formControlName="cidade">
+            </div-->
+            <div class="form-group col-6">
+              <label for="inputEndereco">Endereço(Rua)</label>
+              <input type="text" class="form-control" id="inputEndereco" placeholder="Endereço"
+                formControlName="endereco">
+            </div>
+            <div class="form-group col-sm-3">
+              <label for="inputCEP">CEP</label>
+              <input type="text" class="form-control" id="inputCEP" placeholder="CEP" formControlName="cep"
+                mask="{{maskcep}}">
+            </div>
+            <div class="form-group col-sm-3">
+              <label for="telefone">Telefone</label>
+              <input type="text" class="form-control" id="telefone" placeholder="Telefone" formControlName="telefone"
+                mask="{{masktelefone}}">
+            </div>
+          </div>
+          <div class="form-row">
+
+          </div>
+
+          <div class="form-row mb-2">
+            <a class="btn btn-warning btn-lg btn-block text-white" target="_self" href="assets/contrato/contrato.pdf"
+              download="contrato.pdf">
+              Clique aqui para baixar o contrato MySquare</a>
+          </div>
+
+          <div class="form-row">
+            <img class="w-75" [src]="url">
+            <div class="custom-file mb-4">
+              <input type="file" class="custom-file-input" id="customFile" (change)="onChange($event)">
+              <label class="custom-file-label" for="customFile" id="customFileLabel">
+                Contrato Assinado, Doc. com foto e Procuração (se preciso).
+              </label>
+            </div>
+
+            <div *ngIf="files.length > 0" id="res_word">
+              <div class="text-secondary">Lista de documentos</div>
+              <div class="form-group box-filter">
+                <div class="chip" *ngFor="let item of files; let j=index" id={{j}}>
+                  <span class="label" [ngStyle]="{'background-color':colorDoc}">
+                    <span>{{ item.nome }}</span>
+                    <i class="chip-icon fa fa-close text-center" (click)="removeDoc($event,j)"></i>
+                  </span>
+                </div>
+              </div>
+            </div>
+
+            <div class="form-row mb-2">
+              <a class="btn btn-primary btn-block text-white">
+                1 - Contrato MySquare assinado;
+                2 - Contrato social ou ultima alteração;
+                3 - Documento do responsável legal  que irá assinar o contrato (CNH ou RG).
+
+              </a>
+            </div>
+            <div class="form-row mb-2">
+              <a class="btn btn-secondary btn-block text-white">
+                Atenção: Caso você não seja o proprietario da empresa,
+                é preciso enviar uma carta de representante legal assinada.
+
+              </a>
+            </div>
+
+            <!--div class="custom-file mb-4">
+                          <input type="file" class="custom-file-input" id="customFile" (change)="onChange($event)">
+                          <label class="custom-file-label" for="customFile" id="customFileLabel">
+                            Procuração de representante legal da empresa
+                          </label>
+                        </!--div>
+                        <div-- class="custom-file mb-4">
+                        <input type="file" class="custom-file-input" id="customFile" (change)="onChange($event)">
+                        <label class="custom-file-label" for="customFile" id="customFileLabel">
+                          Cópia de documento com foto(CNH ou RG)
+                        </label>
+                        </div-->
+
+            <!--button type="button" class="btn btn-danger">Delete image</button-->
+          </div>
+        </form>
+      </div>
+      <div class="card-footer text-center">
+        <button type="button" (click)="anterior()" class="btn bg-success text-white mr-2">Anterior</button>
+        <button type="button" (click)="proximo($event)" class="btn bg-success text-white">Próximo</button>
+      </div>
+    </div>
+  </div>
+
+
+  <div class="row justify-content-md-center" *ngIf="step==3">
+    <div class="card mt-2" id="painel2">
+      <div class="card-body">
+        <h5 class="card-title text-center mb-3">Aceitar Termos</h5>
+        <p class="card-text">XXXXX XXXXX XXXXX XXXXX XXXXX XXXXX XXXXX XXXXX XXXXX XXXXX XXXXX XXXXX.
+          XXXXX XXXXX XXXXX XXXXX XXXXX XXXXX XXXXX XXXXX XXXXX XXXXX XXXXX XXXXX.
+        </p>
+        <p class="card-text">XXXXX XXXXX XXXXX XXXXX XXXXX XXXXX XXXXX XXXXX XXXXX XXXXX XXXXX XXXXX.
+          XXXXX XXXXX XXXXX XXXXX XXXXX XXXXX XXXXX XXXXX XXXXX XXXXX XXXXX XXXXX.
+        </p>
+        <div class="custom-control custom-checkbox">
+          <input type="checkbox" class="custom-control-input" id="termocheck" [(ngModel)]="termocheck">
+          <label class="custom-control-label" for="termocheck">Concordo com os termos de uso.</label>
+        </div>
+      </div>
+      <div class="card-footer text-center">
+        <button type="button" (click)="anterior()" class="btn bg-success text-white mr-2">Anterior</button>
+        <button type="button" (click)="onSubmit()" class="btn bg-success text-white">Concluir</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Spinner de load-->
+<div class="spinner" *ngIf="showSpinner"></div>

@@ -1,0 +1,148 @@
+body {
+    margin: 10px;
+    background: #fff;
+  }
+
+  .wizard {
+    .badge {
+      margin: 0 5px 0 18px;
+      position: relative;
+      top: -1px;
+    }
+    a {
+      padding: 10px 12px 10px;
+      margin-right: 5px;
+      background: #efefef;
+      position: relative;
+      display: inline-block;
+      &:before {
+        width: 0;
+        height: 0;
+        border-top: 20px inset transparent;
+        border-bottom: 20px inset transparent;
+        border-left: 20px solid #fff;
+        position: absolute;
+        content: "";
+        top: 0;
+        left: 0;
+      }
+      &:after {
+        width: 0;
+        height: 0;
+        border-top: 20px inset transparent;
+        border-bottom: 20px inset transparent;
+        border-left: 20px solid #efefef;
+        position: absolute;
+        content: "";
+        top: 0;
+        right: -20px;
+        z-index: 2;
+      }
+      &:first-child {
+        -webkit-border-radius: 4px 0 0 4px;
+        -moz-border-radius: 4px 0 0 4px;
+        border-radius: 4px 0 0 4px;
+      }
+      &:last-child {
+        -webkit-border-radius: 0 4px 4px 0;
+        -moz-border-radius: 0 4px 4px 0;
+        border-radius: 0 4px 4px 0;
+      }
+      &:first-child:before,
+      &:last-child:after {
+        border: none;
+      }
+      &:first-child .badge {
+        margin-left: 0;
+      }
+    }
+    .current {
+      background: #007ACC;
+      color: #fff;
+      &:after {
+        border-left-color: #007ACC;
+      }
+    }
+    .cincluido {
+      background: #28a745;
+      color: #fff;
+      &:after {
+        border-left-color: #28a745;
+      }
+    }
+  }
+
+
+
+  .chip {
+    display: inline-block
+}
+
+.chip .label {
+    position: relative;
+    background-color: #efefef;
+    color:white;
+    padding: 6.5px 25px 6.5px 13px;
+    height: 25px;
+    font-weight: bold;
+    line-height: 12px;
+    margin-bottom: 2px;
+    margin-right: 5px;
+    display: inline-block;
+    cursor: pointer;
+    -webkit-border-radius: 12.5px;
+    -moz-border-radius: 12.5px;
+    border-radius: 12.5px
+}
+
+.chip .label .chip-icon {
+    position: absolute;
+    display: inline-block;
+    width: 17px;
+    height: 17px;
+    background-color: #d5d5d5;
+    line-height: 17px;
+    color: #525252;
+    font-size: 13px;
+    top: 4px;
+    right: 4px;
+    -webkit-border-radius: 8.5px;
+    -moz-border-radius: 8.5px;
+    border-radius: 8.5px
+}
+
+.chip .label .chip-icon:hover {
+    background-color: #fb535b;
+    color: #fff;
+    transition: background-color .3s ease-in-out;
+    -moz-transition: background-color .3s ease-in-out;
+    -webkit-transition: background-color .3s ease-in-out
+}
+
+.wk2-icon-close:before {
+    content: "\f153"
+}
+
+.select2-search__field {
+    font-size: 13px;
+    color: #686868;
+    width: 100%!important;
+    margin: 3px 5px 3px;
+    font-size: 16px;
+    background: 0 0;
+    border: none;
+    outline: 0;
+    box-shadow: none;
+    -webkit-appearance: textfield;
+    box-sizing: border-box;
+    padding: 0;
+}
+
+.box-filter {
+    border: 1px solid #d5d5d5;
+    min-height: 50px;
+    border-radius: 3px;
+    font-size: 13px;
+    line-height: 1.4;
+    padding: 4px;
+}

@@ -1,0 +1,429 @@
+<div class="row mt-2 mx-1">
+  <!-- Painel esquerdo-->
+  <div class="col-sm-12 col-md-3">
+    <fieldset class="card">
+      <div class="card-body">
+        <div class="card-title">
+          <h5 class="title_blue">Trabalhos freelancer de Desenvolvimento Web</h5>
+        </div>
+        <div id="filtro_word">
+          <div class="text-secondary">Filtro por palavra</div>
+          <div class="form-group box-filter">
+            <div class="chip" *ngFor="let item of lista; let i=index" id={{i}}>
+              <span class="label">
+                <span>{{item}}</span>
+                <i class="chip-icon fa fa-close text-center" (click)="removeFilter($event)"></i>
+              </span>
+            </div>
+            <input class="select2-search__field" (keydown.enter)="onKeydown($event)">
+          </div>
+        </div>
+        <div id="filtro_time">
+          <div class="text-secondary">Filtro por data</div>
+
+          <select class="custom-select" id="inputGroupSelect01">
+            <option selected>Choose...</option>
+            <option value="1">One</option>
+            <option value="2">Two</option>
+            <option value="3">Three</option>
+          </select>
+        </div>
+      </div>
+    </fieldset>
+  </div>
+
+  <div class="col-sm-12 col-md-9">
+
+      <!--img src="assets/img/banner-fornecedor.PNG" class="img-fluid" alt="Banner cards de Serviços">
+
+      < Cards indicadores
+        <div class="row">
+            <div class="col-md-6 col-xl-4">
+                <div class="card  py-0 hist-content escudo-text bg-gray">
+                    <div class="hist-content-wrapper text-white">
+                        <div class="hist-content-left">
+                            <div class="hist-heading">Oportunidades</div>
+                            <div class="hist-subheading">Aguardando orçamento</div>
+                        </div>
+                        <div class="hist-content-right">
+                            <div class="hist-numbers text-white"><span>11</span></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card  py-0 my-1 hist-content escudo-text bg-gray">
+                    <div class="hist-content-wrapper text-white">
+                        <div class="hist-content-left">
+                            <div class="hist-heading">Oportunidades</div>
+                            <div class="hist-subheading">Aguardando orçamento</div>
+                        </div>
+                        <div class="hist-content-right">
+                            <div class="hist-numbers text-white"><span>11</span></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="progress">
+                    <div class="progress-bar" role="progressbar" style="width: 25%;" aria-valuenow="25"
+                        aria-valuemin="0" aria-valuemax="100">25%</div>
+                </div>
+            </div>
+            <div class="col-md-6 col-xl-4">
+                <div class="card  py-0 hist-content escudo-text bg-gray">
+                    <div class="hist-content-wrapper text-white">
+                        <div class="hist-content-left">
+                            <div class="hist-heading">Oportunidades</div>
+                            <div class="hist-subheading">Aguardando orçamento</div>
+                        </div>
+                        <div class="hist-content-right">
+                            <div class="hist-numbers text-white"><span>11</span></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card  py-0 my-1 hist-content escudo-text bg-gray">
+                    <div class="hist-content-wrapper text-white">
+                        <div class="hist-content-left">
+                            <div class="hist-heading">Oportunidades</div>
+                            <div class="hist-subheading">Aguardando orçamento</div>
+                        </div>
+                        <div class="hist-content-right">
+                            <div class="hist-numbers text-white"><span>11</span></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="progress">
+                    <div class="progress-bar" role="progressbar" style="width: 25%;" aria-valuenow="25"
+                        aria-valuemin="0" aria-valuemax="100">25%</div>
+                </div>
+            </div>
+            <div class="col-md-6 col-xl-4">
+                <div class="card  py-0 hist-content escudo-text bg-gray">
+                    <div class="hist-content-wrapper text-white">
+                        <div class="hist-content-left">
+                            <div class="hist-heading">Oportunidades</div>
+                            <div class="hist-subheading">Aguardando orçamento</div>
+                        </div>
+                        <div class="hist-content-right">
+                            <div class="hist-numbers text-white"><span>11</span></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card  py-0 my-1 hist-content escudo-text bg-gray">
+                    <div class="hist-content-wrapper text-white">
+                        <div class="hist-content-left">
+                            <div class="hist-heading">Oportunidades</div>
+                            <div class="hist-subheading">Aguardando orçamento</div>
+                        </div>
+                        <div class="hist-content-right">
+                            <div class="hist-numbers text-white"><span>11</span></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="progress">
+                    <div class="progress-bar" role="progressbar" style="width: 25%;" aria-valuenow="25"
+                        aria-valuemin="0" aria-valuemax="100">25%</div>
+                </div>
+            </div>
+        </div>-->
+
+    <!---- Projetos-->
+    <div class="row" *ngFor=" let item of listadePedidos let i=index">
+      <div class="card my-2 w-100">
+        <div class="card-header pb-2">
+          <strong class="title_blue">{{item.titulo}}
+            <span *ngIf="item.status == 'propostaenviada'"  class="badge badge-primary">Proposta enviada</span>
+            <span *ngIf="item.status == 'aberta'" class="badge badge-success">Aberta</span>
+          </strong>
+        </div>
+        <div class="card-body pt-2">
+          <div class="text-secondary">
+            <span class="project-field">
+              <strong class="text_blue">Tipo: </strong>
+              <span *ngIf="item.tipo=='s'">Serviço</span>
+              <span *ngIf="item.tipo=='p'">Produto</span>
+            </span>
+            <span class="project-field">
+              <strong class="text_blue">Precisa de Visita: </strong>
+              <span *ngIf="item.temvisita==true">Sim</span>
+              <span *ngIf="item.temvisita==false">Não</span>
+            </span>
+            <span class="project-field">
+              <strong class="text_blue">Publicado: </strong>
+              <span> {{ item.publicado| date:"dd/MM/yyyy" }}</span>
+            </span>
+            <span class="project-field">
+              <strong class="text_blue">Prazo estimado de entrega:</strong>
+              <span> {{ item.dataentregaestimada | date:"dd/MM/yyyy" }}</span>
+            </span>
+            <span class="project-field">
+              <strong class="text_blue">Encerramento da Proposta:</strong>
+              <span> {{ item.datafimpublicacao| date:"dd/MM/yyyy" }}</span>
+            </span>
+          </div>
+          <div class="text-secondary mt-3">
+            <h5 class="card-title text_blue">Descrição: </h5>
+            <p class="card-text">{{item.descricao}}</p>
+            <strong class="text_blue">Categorias: </strong>
+             <label class="pr-2" *ngFor="let categoria of item.categorias">{{categoria.nome}},</label>
+            <br>
+
+            <button type="button" class="btn btn-primary mt-3" (click)="escreverProposta(item)"
+             *ngIf="!item.showProposta && !item.proposta">Fazer Proposta
+            </button>
+            <button type="button" class="btn btn-success mt-3 mr-2" (click)="editarProposta(item)"
+              *ngIf="item.proposta && !item.escondeeditar && item.proposta.podeeditar" > Editar Proposta
+            </button>
+            <button type="button" class="btn btn-danger mt-3" (click)="excluirProposta(item)"
+              *ngIf="item.proposta && !item.escondeeditar && item.proposta.podeeditar" > Excluir Proposta
+            </button>
+            <a class="btn btn-primary mt-3" (click)="visualizarProposta(item)"
+              *ngIf="(item.proposta && !item.escondeeditar) && (!item.proposta.podeeditar && !item.showPropostaFeita)" >
+              <i style="font-size: 25px; color: white;"  class="fa fa-eye"></i>
+            </a>
+          </div>
+
+          <!--Formulário para fazer Proposta-->
+          <div class="card mt-3" *ngIf="item.showProposta">
+            <div class="card-header text-white bg-primary">
+              Fazer Proposta
+              <button class="close text-white" (click)="fecharProposta(item)"> <span>&times;</span> </button>
+            </div>
+
+            <div class="card-body" >
+              <label class="title_blue">Proposta:</label>
+              <textarea class="form-control text-secondary" rows="3" maxlength="5000" [(ngModel)]="item.descricaoproposta" (keyup)="varredura($event,item)"
+                ></textarea>
+
+              <div class="row" *ngIf="item.tipo=='s'">
+                <div class="form-group col-md-4">
+                  <label class="title_blue mt-2">Data estimada:</label>
+                  <input class="form-control mt-2" type="date" name="dateEntrega" [(ngModel)]="item.dataentrega" (change)="varredura($event,item)">
+                </div>
+
+                <div class="form-group col-md-4">
+                  <label class="title_blue mt-2">Valor do serviço (R$):</label>
+                  <input class="form-control  mt-2" type="text" mask="separator.2" thousandSeparator="."  [(ngModel)]="item.valorservico" (keyup)="varredura($event,item)">
+                </div>
+              </div>
+
+              <div class="custom-file row" *ngIf="item.tipo=='s'">
+                <div class="form-group col-md-8">
+                  <label class="title_blue">PDF do orçamento:</label>
+                  <div class="custom-file">
+                    <input type="file" class="custom-file-input" id="customFile" (change)="onChange($event)" (change)="varredura($event,item)">
+                    <label class="custom-file-label" for="customFile" id="customFileLabel">Enviar arquivo</label>
+                  </div>
+                </div>
+              </div>
+
+              <div *ngIf="item.tipo=='p'">
+                <label class="title_blue mt-3">Lista de Produtos:</label>
+                <table class="table table table-action mt-0" id="accordion">
+                  <thead class="text_blue">
+                    <tr>
+                      <th></th>
+                      <th class="t-small">N.</th>
+                      <th class="t-small">Descrição</th>
+                      <th class="t-small">Qtd</th>
+                      <th class="t-small">Val. Uni.</th>
+                      <th class="t-small">Total</th>
+                      <th class="t-small">Data de Entrega</th>
+                      <th class="t-small">confirmar/editar</th>
+                    </tr>
+                  </thead>
+                  <tbody *ngFor="let produto of listadeProdutos let j=index">
+                    <tr>
+                      <td>
+                        <button class="btn btn-primary" type="button" data-toggle="collapse"
+                          [attr.data-target]="'#collapseExample'+j" aria-expanded="false">
+                          <i class="fa fa-caret-down"></i></button>
+                      </td>
+                      <td scope="row"><b class="esconder"> N.: </b>{{j+1}}</td>
+                      <td><b class="esconder"> Descrição: </b>{{produto.descricao}}</td>
+                      <td><b class="esconder"> Quantidade: </b>{{produto.qtd}}</td>
+
+                      <td  *ngIf="!produto.campoVisivel">
+                        <b class="esconder"> Valor unitário: </b>
+                        <input class="form-control" style="width:70px;" type="number" nui-number-mask [(ngModel)]="produto.valorunitario"
+                         (keyup)="varredura($event,item)" [readonly]="produto.readonly" (change)="varredura($event,item)">
+                      </td>
+                      <td  *ngIf="produto.campoVisivel">
+                        <b class="esconder"> Valor unitário: </b>{{produto.valorunitario | currency: 'BRL' : 'symbol'}}
+                      </td>
+
+
+                      <td ><b class="esconder"> Valor total: </b>{{produto.valortotal | currency: 'BRL' : 'symbol'}}</td>
+
+
+                      <td *ngIf="!produto.campoVisivel">
+                        <b class="esconder"> Data estimada: </b>
+                        <input class="form-control" style="width:160px;" type="date" (change)="varredura($event,item)"
+                          name="dateEntrega" [(ngModel)]="produto.dataentregaprod" ></td>
+                      <td *ngIf="produto.campoVisivel">
+                        <span><b class="esconder"> Data estimada: </b> {{ produto.dataentregaprod | date:"dd/MM/yyyy" }}</span>
+                      </td>
+
+                      <td *ngIf="!produto.campoVisivel">
+                        <a class="btn btn-success"(click)="addPropostaProd($event,produto)" ><i style="font-size: 25px; color: white;" class="fa fa-check-square"></i></a>
+                      </td>
+
+                      <td *ngIf="produto.campoVisivel">
+                        <a class="btn btn-primary" (click)="editarProProd(produto)" ><i style="font-size: 25px; color: white;"  class="fa fa-edit"></i></a>
+                      </td>
+                    </tr>
+                    <tr class="collapse" [attr.id]="'collapseExample'+j" data-parent="#accordion">
+                      <td colspan="100%">
+                        <div class="card">
+                          <div class="row no-gutters">
+                            <div class="col-sm-5">
+                               <img [src]="produto.imgproduto.base64" class="card-img-top h-100">
+                            </div>
+                            <div class="col-sm-7">
+                              <div class="card-body">
+                                <ul class="list-group list-group-flush">
+                                  <li class="list-group-item"><b>Fabricante:</b>
+                                    {{produto.fabricante}}
+                                  </li>
+                                  <li class="list-group-item"><b>PartNumber:</b>
+                                    {{produto.partnumber}}
+                                  </li>
+                                  <li class="list-group-item"><b>NCM:</b> {{produto.ncm}}
+                                  </li>
+                                </ul>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+                <label class="title_blue">PDF do orçamento:</label>
+                <div class="custom-file">
+                  <input type="file" class="custom-file-input" id="customFile" (change)="onChange($event)" (change)="varredura($event,item)">
+                  <label class="custom-file-label" for="customFile" id="customFileLabel">Enviar arquivo</label>
+                </div>
+
+              </div>
+            </div>
+
+            <div class="card-footer">
+              <button type="button" class="btn btn-success mx-2" *ngIf="item.tipo=='s'"
+                (click)="enviarPropostaServico($event, item)">Salvar</button>
+              <button type="button" class="btn btn-success mx-2" *ngIf="item.tipo=='p'"
+                (click)="enviarPropostaProduto($event, item)">Salvar</button>
+              <button type="button" class="btn btn-warning" (click)="fecharProposta(item)">Cancelar</button>
+            </div>
+          </div>
+
+           <!--Detalehes da Proposta Feita-->
+          <div class="card mt-3" *ngIf="item.showPropostaFeita">
+            <div class="card-header text-white bg-primary">
+              Proposta Feita
+              <button class="close text-white" (click)="fecharProposta(item)"> <span>&times;</span> </button>
+            </div>
+
+            <div class="card-body" >
+              <label class="title_blue"> Descrição da Proposta enviada:</label>
+              <div class="caixa-descricao" [ngClass]="{'show-less': showShortDesciption}">
+                {{item.proposta.proposta}}
+              </div>
+              <button type="button" style="margin: 2px;" class="btn btn-info" (click)="alterDescriptionText()">
+                {{ showShortDesciption ? 'ler mais..': 'ler menos' }}
+              </button>
+
+              <div class="row" *ngIf="item.tipo=='s'">
+                <div class="form-group col-md-5">
+                  <label class="title_blue mt-2">Data estimada:</label>
+                  <span> {{ item.proposta.dataentrega | date:"dd/MM/yyyy" }}</span>
+                </div>
+
+                <div class="form-group col-md-4 ">
+                  <label class="title_blue mt-2">Valor do serviço:</label>
+                  <span > {{ item.proposta.valorservico | currency : 'BRL'}}</span>
+                </div>
+              </div>
+
+              <div class="custom-file row" *ngIf="item.tipo=='s'">
+                <div class="form-group col-md-8">
+                  <label class="title_blue">Arquivo enviado:</label>
+                  <button style="margin: 2px;" class="btn btn-primary" (click)="getDocs(item.proposta.docproposta.namestore, item.proposta.docproposta.name)">{{item.proposta.docproposta.name}}</button>
+                </div>
+              </div>
+
+              <div *ngIf="item.tipo=='p'" class="mb-1">
+                <label class="title_blue mt-3">Lista de Produtos:</label>
+                <table class="table table-action mt-0" >
+                  <thead class="text_blue">
+                    <tr>
+                      <th class="t-small"></th>
+                      <th class="t-small">N.</th>
+                      <th class="t-small">Descrição</th>
+                      <th class="t-small">Qtd</th>
+                      <th class="t-small">Val. Uni.</th>
+                      <th class="t-small">Total</th>
+                      <th class="t-small">Data de Entrega</th>
+                    </tr>
+                  </thead>
+                  <tbody *ngFor="let produto of listadeProdutos let j=index">
+                    <tr>
+                      <td>
+                        <button class="btn btn-primary" type="button" data-toggle="collapse"
+                          [attr.data-target]="'#collapseExample'+j" aria-expanded="false">
+                          <i class="fa fa-caret-down"></i></button>
+                      </td>
+                      <td scope="row"><b class="esconder"> N.: </b>{{j+1}}</td>
+                      <td><b class="esconder"> Descrição: </b>{{produto.descricao}}</td>
+                      <td><b class="esconder"> Quantidade: </b>{{produto.qtd}}</td>
+                      <td><b class="esconder"> Valor unitário: </b>{{produto.proposta.valorunitario | currency: 'BRL' : 'symbol'}}</td>
+                      <td ><b class="esconder"> Valor total: </b>{{produto.proposta.valortotal | currency: 'BRL' : 'symbol'}}</td>
+                      <td><span><b class="esconder"> Data estimada: </b> {{ produto.proposta.dataentrega | date:"dd/MM/yyyy" }}</span></td>
+                    </tr>
+
+                    <tr class="collapse" [attr.id]="'collapseExample'+j" data-parent="#accordion">
+                      <td colspan="100%">
+                        <div class="card">
+                          <div class="row no-gutters">
+                            <div class="col-sm-5">
+                              <img [src]="produto.imgproduto.base64" class="card-img-top h-100">
+                            </div>
+                            <div class="col-sm-7">
+                              <div class="card-body">
+                                <ul class="list-group list-group-flush">
+                                  <li class="list-group-item"><b>Fabricante:</b>
+                                    {{produto.fabricante}}
+                                  </li>
+                                  <li class="list-group-item"><b>PartNumber:</b>
+                                    {{produto.partnumber}}
+                                  </li>
+                                  <li class="list-group-item"><b>NCM:</b> {{produto.ncm}}
+                                  </li>
+                                </ul>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+
+                <div class="custom-file row">
+                  <div class="form-group col-md-8">
+                    <label class="title_blue">Arquivo enviado:</label>
+                    <button style="margin: 2px;" class="btn btn-primary" (click)="getDocs(item.proposta.docproposta.namestore, item.proposta.docproposta.name)">{{item.proposta.docproposta.name}}</button>
+
+                  </div>
+                </div>
+
+              </div>
+            </div>
+
+            <div class="card-footer">
+              <button type="button" class="btn btn-warning" (click)="fecharProposta(item)">Fechar</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+<!-- Spinner de load-->
+<div class="spinner" *ngIf="showSpinner"></div>

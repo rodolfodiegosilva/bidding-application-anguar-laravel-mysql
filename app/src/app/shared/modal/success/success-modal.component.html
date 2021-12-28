@@ -1,0 +1,14 @@
+<div class="modal-content">
+    <div class="modal-header text-white bg-primary">
+        <h5 class="modal-title" id="mensagemModalLabel">{{title}}</h5>
+        <button type="button" class="close" (click)="onClose()" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body text-secondary">
+        {{msg}}
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-primary" (click)="onClose()">{{okTxt}}</button>
+    </div>
+</div>
